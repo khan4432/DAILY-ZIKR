@@ -87,11 +87,12 @@
     <script>
         const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
         const zikrs = [
-            "1. 4th Kalma",
-            "2. Tasbee",
-            "3. Subhanallahi wa bihamdihi, subhanallahil azeem (100x)",
-            "4. Aytal Qursi",
-            "5. Last 2 Aayat"
+            "1. 1st Kalma",
+            "2. 4th Kalma",
+            "3. Tasbee",
+            "4. Subhanallahi wa bihamdihi, subhanallahil azeem (100x)",
+            "5. Aytal Qursi",
+            "6. Last 2 Aayat"
         ];
 
         // Initialize Date
@@ -152,9 +153,9 @@
             const date = document.getElementById('dateSelect').value;
             const data = getData();
 
-            const checks = data[person]?.[date] || [false, false, false, false, false];
+            const checks = data[person]?.[date] || new Array(zikrs.length).fill(false);
             zikrs.forEach((_, index) => {
-                document.getElementById(`zikr-${index}`).checked = checks[index];
+                document.getElementById(`zikr-${index}`).checked = checks[index] || false;
             });
         }
         loadFormState();
