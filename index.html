@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Zikr Portal - Family Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 shadow-md py-4 px-6 mb-6">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h1 class="text-2xl font-bold text-emerald-400 flex items-center gap-2">
+                📿 Daily Zikr Portal
+            </h1>
+            <nav class="flex gap-2 bg-slate-900 p-1 rounded-lg border border-slate-700">
+                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-4 py-2 rounded-md font-medium text-sm transition bg-emerald-600 text-white shadow">Daily Tracker</button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Reports & Charts</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pb-12">
+
+        <!-- TAB 1: DAILY TRACKER -->
+        <section id="tab-tracker" class="space-y-6">
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-300">Mark Today's Zikr Progress</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-1">Select Person:</label>
+                        <select id="personSelect" class="w-full bg-slate-900 border border-slate-750 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                            <option value="Imran">Imran</option>
+                            <option value="Saima">Saima</option>
+                            <option value="Huzaifa">Huzaifa</option>
+                            <option value="Ali">Ali</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-400 mb-1">Select Date:</label>
+                        <input type="date" id="dateSelect" class="w-full bg-slate-900 border border-slate-750 rounded-lg p-2 text-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-3 mb-6" id="zikrList">
+                    <!-- Zikr items populated via JS -->
+                </div>
+
+                <button onclick="saveProgress()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-lg transition shadow-md">
+                    Save Progress
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 2: ANALYTICS & CHARTS -->
+        <section id="tab-analytics" class="hidden space-y-6">
+            <div class="flex justify-between items-center bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <h2 class="text-xl font-semibold text-emerald-300">Performance Analytics</h2>
+                <select id="timeframeSelect" onchange="updateCharts()" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-white text-sm outline-none">
+                    <option value="daily">Daily View</option>
+                    <option value="weekly">Weekly View</option>
+                    <option value="monthly">Monthly View</option>
+                    <option value="yearly">Yearly View</option>
+                </select>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="summaryCards">
+                <!-- Populated via JS -->
+            </div>
+
+            <!-- Chart Container -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-lg">
+                <canvas id="zikrChart" class="w-full h-80"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
+        const zikrs = [
+            "1. 4th Kalma",
+            "2. Tasbee",
+            "3. Subhanallahi wa bihamdihi, subhanallahil azeem (100x)",
+            "4. Aytal Qursi",
+            "5. Last 2 Aayat"
+        ];
+
+        // Initialize Date
+        document.getElementById('dateSelect').valueAsDate = new Date();
+
+        // Render Zikr Checkboxes
+        const zikrListEl = document.getElementById('zikrList');
+        zikrs.forEach((zikr, index) => {
+            zikrListEl.innerHTML += `
+                <label class="flex items-center gap-3 p-3 bg-slate-900/50 border border-slate-750 rounded-lg hover:bg-slate-900 cursor-pointer transition">
+                    <input type="checkbox" id="zikr-${index}" class="w-5 h-5 accent-emerald-500 rounded bg-slate-800 border-slate-600">
+                    <span class="text-slate-200 font-medium">${zikr}</span>
+                </label>
+            `;
+        });
+
+        function switchTab(tab) {
+            if(tab === 'tracker') {
+                document.getElementById('tab-tracker').classList.remove('hidden');
+                document.getElementById('tab-analytics').classList.add('hidden');
+                document.getElementById('btn-tracker').className = "px-4 py-2 rounded-md font-medium text-sm transition bg-emerald-600 text-white shadow";
+                document.getElementById('btn-analytics').className = "px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
+            } else {
+                document.getElementById('tab-tracker').classList.add('hidden');
+                document.getElementById('tab-analytics').classList.remove('hidden');
+                document.getElementById('btn-analytics').className = "px-4 py-2 rounded-md font-medium text-sm transition bg-emerald-600 text-white shadow";
+                document.getElementById('btn-tracker').className = "px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
+                updateCharts();
+            }
+        }
+
+        // LocalStorage Data Management
+        function getData() {
+            return JSON.parse(localStorage.getItem('zikrData') || '{}');
+        }
+
+        function saveProgress() {
+            const person = document.getElementById('personSelect').value;
+            const date = document.getElementById('dateSelect').value;
+            const data = getData();
+
+            if(!data[person]) data[person] = {};
+            
+            const checks = [];
+            zikrs.forEach((_, index) => {
+                checks.push(document.getElementById(`zikr-${index}`).checked);
+            });
+
+            data[person][date] = checks;
+            localStorage.setItem('zikrData', JSON.stringify(data));
+            alert('Zikr progress saved successfully!');
+        }
+
+        // Load saved state when person or date changes
+        document.getElementById('personSelect').addEventListener('change', loadFormState);
+        document.getElementById('dateSelect').addEventListener('change', loadFormState);
+
+        function loadFormState() {
+            const person = document.getElementById('personSelect').value;
+            const date = document.getElementById('dateSelect').value;
+            const data = getData();
+
+            const checks = data[person]?.[date] || [false, false, false, false, false];
+            zikrs.forEach((_, index) => {
+                document.getElementById(`zikr-${index}`).checked = checks[index];
+            });
+        }
+        loadFormState();
+
+        // Chart & Analytics Logic
+        let zikrChart = null;
+
+        function updateCharts() {
+            const timeframe = document.getElementById('timeframeSelect').value;
+            const data = getData();
+            const summaryCardsEl = document.getElementById('summaryCards');
+            summaryCardsEl.innerHTML = '';
+
+            const percentages = persons.map(person => {
+                const pData = data[person] || {};
+                let totalCompleted = 0;
+                let totalPossible = 0;
+
+                const now = new Date();
+                
+                Object.keys(pData).forEach(dateStr => {
+                    const d = new Date(dateStr);
+                    let include = false;
+
+                    if (timeframe === 'daily') {
+                        if (dateStr === now.toISOString().split('T')[0]) include = true;
+                    } else if (timeframe === 'weekly') {
+                        const diffTime = Math.abs(now - d);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        if (diffDays <= 7) include = true;
+                    } else if (timeframe === 'monthly') {
+                        if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) include = true;
+                    } else if (timeframe === 'yearly') {
+                        if (d.getFullYear() === now.getFullYear()) include = true;
+                    }
+
+                    if (include) {
+                        pData[dateStr].forEach(val => {
+                            if (val) totalCompleted++;
+                            totalPossible++;
+                        });
+                    }
+                });
+
+                const pct = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
+                
+                // Render Summary Card
+                summaryCardsEl.innerHTML += `
+                    <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
+                        <h3 class="text-slate-400 text-sm font-medium">${person}</h3>
+                        <p class="text-3xl font-bold text-emerald-400 mt-2">${pct}%</p>
+                        <p class="text-xs text-slate-500 mt-1">${timeframe.toUpperCase()} Completion</p>
+                    </div>
+                `;
+
+                return pct;
+            });
+
+            // Render Chart
+            const ctx = document.getElementById('zikrChart').getContext('2d');
+            if (zikrChart) zikrChart.destroy();
+
+            zikrChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: persons,
+                    datasets: [{
+                        label: `${timeframe.toUpperCase()} Completion %`,
+                        data: percentages,
+                        backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#f1f5f9' } }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
