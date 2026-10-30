@@ -8,28 +8,43 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
+            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96));
             --primary: #ff007f;
+            --primary-hover: #e60073;
             --box-bg: rgba(18, 10, 35, 0.92);
             --shadow: rgba(255, 0, 127, 0.45);
         }
         body {
-            background: linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96));
+            background: var(--bg-grad), url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
             background-size: cover; background-attachment: fixed; color: #ffffff;
         }
         .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
         .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); }
         .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
-        .theme-btn:hover { background: #e60073; }
+        .theme-btn:hover { background: var(--primary-hover); box-shadow: 0 0 30px var(--shadow); }
     </style>
 </head>
 <body class="min-h-screen font-sans p-4">
     <div class="max-w-4xl mx-auto space-y-6">
         <header class="theme-box p-4 rounded-xl flex justify-between items-center flex-wrap gap-4">
             <h1 class="text-xl font-bold theme-title">📿 Zikr & Sawaab Portal</h1>
-            <div class="flex gap-2">
-                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn">Daily Zikr</button>
-                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300">Extra Sawaab</button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300">Analytics</button>
+            <div class="flex items-center gap-2 flex-wrap">
+                <select id="themeSelector" onchange="changeTheme(this.value)" class="bg-slate-900 border text-xs rounded p-2 text-white outline-none">
+                    <option value="cyberpunkneon">⚡ Cyberpunk Neon Glow (Exact)</option>
+                    <option value="emerald">💎 Emerald Cyan</option>
+                    <option value="gold">👑 Royal Gold</option>
+                    <option value="sapphire">🔷 Sapphire Blue</option>
+                    <option value="ruby">❤️ Ruby Crimson</option>
+                    <option value="amethyst">🔮 Royal Amethyst</option>
+                    <option value="rosegold">✨ Rose Gold</option>
+                    <option value="platinum">🪙 Platinum Silver</option>
+                    <option value="emeraldgreen">🌿 Imperial Emerald</option>
+                    <option value="sunset">🌅 Sunset Copper</option>
+                    <option value="cyber">⚡ Cyber Neon Luxe</option>
+                </select>
+                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn text-xs">Daily Zikr</button>
+                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">Extra Sawaab</button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">Analytics</button>
             </div>
         </header>
 
@@ -37,22 +52,22 @@
         <section id="tab-tracker" class="theme-box p-6 rounded-xl space-y-4">
             <h2 class="text-lg font-semibold theme-title">Mark Daily Zikr</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelect" class="bg-slate-900 border border-pink-500 rounded p-2 text-white"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
-                <input type="date" id="dateSelect" class="bg-slate-900 border border-pink-500 rounded p-2 text-white">
+                <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
+                <input type="date" id="dateSelect" class="bg-slate-900 border rounded p-2 text-white text-sm">
             </div>
             <div id="zikrList" class="space-y-2"></div>
-            <button onclick="save('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect')" class="w-full theme-btn py-2.5 rounded">Save Zikr</button>
+            <button onclick="save('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect')" class="w-full theme-btn py-2.5 rounded text-sm">Save Zikr</button>
         </section>
 
         <!-- TAB 2 -->
         <section id="tab-extrasawaab" class="theme-box p-6 rounded-xl space-y-4 hidden">
             <h2 class="text-lg font-semibold theme-title">Mark Extra Sawaab</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelectExtra" class="bg-slate-900 border border-pink-500 rounded p-2 text-white"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
-                <input type="date" id="dateSelectExtra" class="bg-slate-900 border border-pink-500 rounded p-2 text-white">
+                <select id="personSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
+                <input type="date" id="dateSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm">
             </div>
             <div id="extraList" class="space-y-2"></div>
-            <button onclick="save('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra')" class="w-full theme-btn py-2.5 rounded">Save Extra Sawaab</button>
+            <button onclick="save('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra')" class="w-full theme-btn py-2.5 rounded text-sm">Save Extra Sawaab</button>
         </section>
 
         <!-- TAB 3 -->
@@ -60,8 +75,8 @@
             <div class="flex justify-between items-center flex-wrap gap-2">
                 <h2 class="text-lg font-semibold theme-title">Analytics</h2>
                 <div class="flex gap-2">
-                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border border-pink-500 rounded p-1.5 text-white"><option value="zikr">Zikr</option><option value="extra">Extra Sawaab</option></select>
-                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border border-pink-500 rounded p-1.5 text-white"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
+                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs"><option value="zikr">Zikr</option><option value="extra">Extra Sawaab</option></select>
+                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
                 </div>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="cards"></div>
@@ -70,6 +85,34 @@
     </div>
 
     <script>
+        const themes = {
+            cyberpunkneon: { primary: "#ff007f", hover: "#e60073", box: "rgba(18, 10, 35, 0.92)", shadow: "rgba(255, 0, 127, 0.45)", bg: "linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96))" },
+            emerald: { primary: "#00ffcc", hover: "#00cca3", box: "rgba(13, 20, 38, 0.9)", shadow: "rgba(0, 255, 204, 0.2)", bg: "linear-gradient(rgba(5, 10, 25, 0.90), rgba(5, 10, 25, 0.94))" },
+            gold: { primary: "#d4af37", hover: "#b3922f", box: "rgba(30, 25, 15, 0.9)", shadow: "rgba(212, 175, 55, 0.25)", bg: "linear-gradient(rgba(15, 15, 15, 0.92), rgba(25, 20, 10, 0.95))" },
+            sapphire: { primary: "#3b82f6", hover: "#2563eb", box: "rgba(15, 23, 42, 0.9)", shadow: "rgba(59, 130, 246, 0.3)", bg: "linear-gradient(rgba(10, 15, 35, 0.90), rgba(5, 10, 25, 0.94))" },
+            ruby: { primary: "#ef4444", hover: "#dc2626", box: "rgba(35, 15, 15, 0.9)", shadow: "rgba(239, 68, 68, 0.3)", bg: "linear-gradient(rgba(30, 10, 10, 0.90), rgba(15, 5, 5, 0.94))" },
+            amethyst: { primary: "#a855f7", hover: "#9333ea", box: "rgba(25, 15, 35, 0.9)", shadow: "rgba(168, 85, 247, 0.3)", bg: "linear-gradient(rgba(20, 10, 30, 0.90), rgba(10, 5, 20, 0.94))" },
+            rosegold: { primary: "#fb7185", hover: "#f43f5e", box: "rgba(35, 18, 24, 0.9)", shadow: "rgba(251, 113, 133, 0.3)", bg: "linear-gradient(rgba(30, 15, 20, 0.90), rgba(15, 8, 10, 0.94))" },
+            platinum: { primary: "#e2e8f0", hover: "#cbd5e1", box: "rgba(30, 41, 59, 0.9)", shadow: "rgba(226, 232, 240, 0.2)", bg: "linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.94))" },
+            emeraldgreen: { primary: "#10b981", hover: "#059669", box: "rgba(10, 30, 20, 0.9)", shadow: "rgba(16, 185, 129, 0.3)", bg: "linear-gradient(rgba(5, 25, 15, 0.90), rgba(2, 15, 8, 0.94))" },
+            sunset: { primary: "#f97316", hover: "#ea580c", box: "rgba(35, 18, 10, 0.9)", shadow: "rgba(249, 115, 22, 0.3)", bg: "linear-gradient(rgba(30, 15, 5, 0.90), rgba(15, 8, 2, 0.94))" },
+            cyber: { primary: "#f43f5e", hover: "#e11d48", box: "rgba(20, 10, 40, 0.9)", shadow: "rgba(244, 63, 94, 0.4)", bg: "linear-gradient(rgba(10, 5, 30, 0.90), rgba(5, 2, 15, 0.94))" }
+        };
+
+        function changeTheme(name) {
+            const t = themes[name] || themes.cyberpunkneon;
+            const r = document.documentElement;
+            r.style.setProperty('--primary', t.primary);
+            r.style.setProperty('--primary-hover', t.hover);
+            r.style.setProperty('--box-bg', t.box);
+            r.style.setProperty('--shadow', t.shadow);
+            r.style.setProperty('--bg-grad', t.bg);
+            localStorage.setItem('selectedTheme', name);
+        }
+        const savedTheme = localStorage.getItem('selectedTheme') || 'cyberpunkneon';
+        changeTheme(savedTheme);
+        document.getElementById('themeSelector').value = savedTheme;
+
         const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
         const zikrs = ["1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", "4. Subhanallahi wa bihamdihi (100x)", "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"];
         const extras = ["1. Quran Reading", "2. Tahajjud namaaz", "3. Witr namaaz", "4. Nafil namaaz", "5. Sunnat namaaz"];
@@ -82,7 +125,7 @@
             const el = document.getElementById(id);
             el.innerHTML = '';
             list.forEach((item, i) => {
-                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-pink-500"><span class="text-sm">${item}</span></label>`;
+                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm">${item}</span></label>`;
             });
         }
         render(zikrs, 'zikrList', 'zikr');
@@ -91,7 +134,7 @@
         function switchTab(tab) {
             ['tracker', 'extrasawaab', 'analytics'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
-                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium ${t === tab ? 'theme-btn' : 'bg-slate-800 text-slate-300'}`;
+                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium text-xs ${t === tab ? 'theme-btn' : 'bg-slate-800 text-slate-300'}`;
             });
             if(tab === 'analytics') drawChart();
         }
