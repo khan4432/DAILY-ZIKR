@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multi-Tab Hub - Zikr, Clash & Daily Prayer</title>
+  <title>Daily Zikr & Daily Prayer Tracker</title>
   <style>
     * {
       box-sizing: border-box;
@@ -13,21 +13,23 @@
       transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
-    /* 1. Luxury Gold */
+    /* Theme 1: Luxury Gold (Default) */
     :root[data-theme="luxury-gold"] {
-      --card-bg: rgba(20, 23, 29, 0.92);
+      --bg-main: #0b0c10;
+      --card-bg: rgba(20, 23, 29, 0.94);
       --accent: #d4af37;
-      --accent-glow: rgba(212, 175, 55, 0.4);
+      --accent-glow: rgba(212, 175, 55, 0.45);
       --accent-dark: #aa8c2c;
-      --border-color: #2e2616;
+      --border-color: #3d3118;
       --text-main: #f8fafc;
       --text-sub: #d1b87a;
       --counter-text: #0b0c10;
     }
 
-    /* 2. Supreme Green */
+    /* Theme 2: Supreme Green */
     :root[data-theme="supreme-green"] {
-      --card-bg: rgba(7, 43, 30, 0.92);
+      --bg-main: #041710;
+      --card-bg: rgba(7, 43, 30, 0.94);
       --accent: #10b981;
       --accent-glow: rgba(16, 185, 129, 0.45);
       --accent-dark: #059669;
@@ -37,21 +39,23 @@
       --counter-text: #041710;
     }
 
-    /* 3. Rainbow Theme */
+    /* Theme 3: Rainbow */
     :root[data-theme="rainbow"] {
-      --card-bg: rgba(24, 27, 38, 0.92);
+      --bg-main: #0f111a;
+      --card-bg: rgba(24, 27, 38, 0.94);
       --accent: linear-gradient(135deg, #ff007f, #7928ca, #0070f3, #00dfd8);
-      --accent-glow: rgba(255, 0, 128, 0.4);
+      --accent-glow: rgba(255, 0, 128, 0.45);
       --accent-dark: #7928ca;
-      --border-color: #3b2a54;
+      --border-color: #4c336b;
       --text-main: #ffffff;
       --text-sub: #c084fc;
       --counter-text: #ffffff;
     }
 
-    /* 4. Royal Blue */
+    /* Theme 4: Royal Blue */
     :root[data-theme="royal-blue"] {
-      --card-bg: rgba(28, 37, 65, 0.92);
+      --bg-main: #0b132b;
+      --card-bg: rgba(28, 37, 65, 0.94);
       --accent: #38bdf8;
       --accent-glow: rgba(56, 189, 248, 0.45);
       --accent-dark: #0284c7;
@@ -61,9 +65,10 @@
       --counter-text: #0b132b;
     }
 
-    /* 5. Crimson Red */
+    /* Theme 5: Crimson Red */
     :root[data-theme="crimson-red"] {
-      --card-bg: rgba(41, 14, 19, 0.92);
+      --bg-main: #18080a;
+      --card-bg: rgba(41, 14, 19, 0.94);
       --accent: #ef4444;
       --accent-glow: rgba(239, 68, 68, 0.45);
       --accent-dark: #b91c1c;
@@ -73,7 +78,7 @@
       --counter-text: #18080a;
     }
 
-    /* Background: Half Lamborghini, Half Ferrari */
+    /* Half Lamborghini, Half Ferrari Background */
     body {
       min-height: 100vh;
       display: flex;
@@ -96,31 +101,29 @@
       pointer-events: none;
     }
 
-    /* Left Side: Lamborghini (Gold/Cyber Yellow Neon tint & wallpaper) */
     .bg-half.lamborghini {
       width: 50%;
       height: 100%;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
+      background: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.85)),
                   url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-      border-right: 2px solid rgba(212, 175, 55, 0.3);
+      border-right: 2px solid rgba(212, 175, 55, 0.35);
     }
 
-    /* Right Side: Ferrari (Iconic Rosso Corsa Red tint & wallpaper) */
     .bg-half.ferrari {
       width: 50%;
       height: 100%;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
+      background: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.85)),
                   url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-      border-left: 2px solid rgba(239, 68, 68, 0.3);
+      border-left: 2px solid rgba(239, 68, 68, 0.35);
     }
 
     .container {
       background: var(--card-bg);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border-color);
       border-radius: 20px;
       width: 100%;
-      max-width: 550px;
+      max-width: 500px;
       padding: 24px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
       text-align: center;
@@ -130,10 +133,10 @@
     /* Top Color Bar */
     .theme-bar {
       margin-bottom: 16px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.55);
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      padding: 8px 10px;
+      padding: 10px;
     }
 
     .theme-bar-title {
@@ -142,7 +145,7 @@
       color: var(--text-sub);
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
       text-align: left;
     }
@@ -154,8 +157,8 @@
     }
 
     .theme-btn {
-      padding: 6px 2px;
-      border-radius: 6px;
+      padding: 7px 2px;
+      border-radius: 8px;
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
@@ -167,6 +170,7 @@
     .theme-btn.active {
       border-color: #ffffff;
       box-shadow: 0 0 10px var(--accent-glow);
+      font-weight: bold;
     }
 
     .btn-gold { color: #d4af37; border-color: #5c4d1c; }
@@ -175,12 +179,12 @@
     .btn-blue { color: #38bdf8; border-color: #2a3a5f; }
     .btn-red { color: #ef4444; border-color: #591622; }
 
-    /* Main Navigation Tabs */
+    /* Tab Navigation (Pehle ke tabs ke baad naya 3rd tab) */
     .nav-tabs {
       display: flex;
       gap: 8px;
       margin-bottom: 20px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       padding: 4px;
       border-radius: 10px;
       border: 1px solid var(--border-color);
@@ -213,7 +217,33 @@
       display: block;
     }
 
-    /* Common Components */
+    header h1 {
+      color: var(--text-sub);
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: var(--text-sub);
+      font-size: 14px;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    /* Zikr Elements (Unchanged) */
+    .select-box {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      color: var(--text-sub);
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
     select {
       width: 100%;
       padding: 12px;
@@ -224,27 +254,27 @@
       font-size: 15px;
       outline: none;
       cursor: pointer;
-      margin-bottom: 16px;
     }
 
     .zikr-display {
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--border-color);
       border-radius: 16px;
-      padding: 18px;
-      margin-bottom: 20px;
+      padding: 20px;
+      margin-bottom: 24px;
     }
 
     .arabic-text {
-      font-size: 30px;
+      font-size: 32px;
       color: var(--text-main);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       direction: rtl;
     }
 
     .transliteration {
       font-size: 18px;
       font-weight: bold;
+      color: var(--text-main);
       margin-bottom: 4px;
     }
 
@@ -254,38 +284,51 @@
     }
 
     .counter-circle {
-      width: 140px;
-      height: 140px;
+      width: 150px;
+      height: 150px;
       background: var(--accent);
       border-radius: 50%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
       box-shadow: 0 0 25px var(--accent-glow);
       cursor: pointer;
       user-select: none;
+      transition: transform 0.1s;
+    }
+
+    .counter-circle:active {
+      transform: scale(0.95);
     }
 
     .count-number {
-      font-size: 44px;
+      font-size: 48px;
       font-weight: 800;
       color: var(--counter-text);
       line-height: 1;
     }
 
     .count-label {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--counter-text);
       text-transform: uppercase;
       font-weight: 700;
+      letter-spacing: 1px;
       margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    .target-bar {
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
     }
 
     .action-btns {
       display: flex;
-      gap: 10px;
+      gap: 12px;
     }
 
     .action-btn {
@@ -304,13 +347,29 @@
       border: 1px solid #7f1d1d;
     }
 
+    .btn-reset:hover {
+      background: #7f1d1d;
+    }
+
     .btn-tap {
       background: var(--accent);
       color: var(--counter-text);
       font-weight: bold;
     }
 
-    /* Tab 3: Daily Prayer Styles */
+    /* Tab 2: Tech Clash (Unchanged) */
+    .clash-card {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* NEW TAB 3: Daily Prayer */
     .prayer-list {
       display: flex;
       flex-direction: column;
@@ -323,7 +382,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 14px 16px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       border: 1px solid var(--border-color);
       border-radius: 12px;
       transition: all 0.2s;
@@ -331,16 +390,10 @@
 
     .prayer-item.completed {
       border-color: var(--accent);
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.7);
     }
 
-    .prayer-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .prayer-name {
+    .prayer-title {
       font-weight: bold;
       font-size: 16px;
       color: var(--text-main);
@@ -349,6 +402,7 @@
     .prayer-rakat {
       font-size: 12px;
       color: var(--text-sub);
+      margin-top: 2px;
     }
 
     .prayer-checkbox {
@@ -356,18 +410,6 @@
       height: 22px;
       accent-color: #10b981;
       cursor: pointer;
-    }
-
-    /* Tab 2: Tech Clash Mini Box */
-    .clash-card {
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-color);
-      padding: 16px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.5;
     }
   </style>
 </head>
@@ -380,7 +422,7 @@
   </div>
 
   <div class="container">
-    <!-- Top 5 Color Bar -->
+    <!-- Top 5 Colour Themes Bar -->
     <div class="theme-bar">
       <span class="theme-bar-title">Chunein Color Theme:</span>
       <div class="theme-options">
@@ -392,24 +434,32 @@
       </div>
     </div>
 
-    <!-- 3 Tabs Navigation -->
+    <!-- 3 Tabs (Tab 1 & 2 Pehle waale + Naya Tab 3) -->
     <div class="nav-tabs">
       <button class="tab-btn active" onclick="openTab('tab-zikr', this)">1. Daily Zikr</button>
       <button class="tab-btn" onclick="openTab('tab-clash', this)">2. Tech Clash</button>
       <button class="tab-btn" onclick="openTab('tab-prayer', this)">3. Daily Prayer</button>
     </div>
 
-    <!-- TAB 1: DAILY ZIKR -->
+    <!-- TAB 1: DAILY ZIKR (Pehle jaisa hi hai) -->
     <div id="tab-zikr" class="tab-content active">
-      <select id="zikrSelect" onchange="switchZikr()">
-        <option value="0">1. SubhanAllah</option>
-        <option value="1">2. Alhamdulillah</option>
-        <option value="2">3. Allahu Akbar</option>
-        <option value="3">4. La ilaha illallah</option>
-        <option value="4">5. Durood Shareef</option>
-        <option value="5">6. La Hawla wa la Quwwata</option>
-        <option value="6" selected>7. Astaghfirullah</option>
-      </select>
+      <header>
+        <h1>Daily Zikr & Tasbeeh</h1>
+        <p>Apna rozana zikr count karein</p>
+      </header>
+
+      <div class="select-box">
+        <label for="zikrSelect">Zikr Chunein:</label>
+        <select id="zikrSelect" onchange="switchZikr()">
+          <option value="0">1. SubhanAllah</option>
+          <option value="1">2. Alhamdulillah</option>
+          <option value="2">3. Allahu Akbar</option>
+          <option value="3">4. La ilaha illallah</option>
+          <option value="4">5. Durood Shareef</option>
+          <option value="5">6. La Hawla wa la Quwwata</option>
+          <option value="6" selected>7. Astaghfirullah</option>
+        </select>
+      </div>
 
       <div class="zikr-display">
         <div class="arabic-text" id="arabicText">أَسْتَغْفِرُ اللّٰهَ</div>
@@ -422,29 +472,29 @@
         <div class="count-label">Tap Karein</div>
       </div>
 
-      <div style="font-size:13px; color:var(--text-sub); margin-bottom:16px;" id="targetText">Target: 100 Martaba</div>
+      <div class="target-bar" id="targetText">Target: 100 Martaba</div>
 
       <div class="action-btns">
-        <button class="action-btn btn-reset" onclick="resetCount()">Reset</button>
-        <button class="action-btn btn-tap" onclick="incrementCount()">+1 Tap</button>
+        <button class="action-btn btn-reset" onclick="resetCount()">Reset Count</button>
+        <button class="action-btn btn-tap" onclick="incrementCount()">+1 Count</button>
       </div>
     </div>
 
-    <!-- TAB 2: TECH CLASH -->
+    <!-- TAB 2: TECH CLASH (Pehle jaisa hi hai) -->
     <div id="tab-clash" class="tab-content">
-      <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px; color:var(--text-sub);">
+      <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:12px; color:var(--text-sub);">
         <span id="clashPartBadge">Part 1 of 24</span>
-        <span id="clashTopic">Camera Resolution</span>
+        <span id="clashTopic">Camera Megapixels</span>
       </div>
 
       <div class="clash-card" style="border-left: 3px solid #60a5fa;">
         <strong style="color:#93c5fd; display:block; margin-bottom:4px;">Samsung Z Fold 8 Ultra:</strong>
-        <p id="samsungTalk">Mera 200 Megapixel Ultra-Vision camera 100x zoom deta hai! Tera 48MP abhi tak chal raha hai?</p>
+        <p id="samsungTalk">Dekh chote, mera primary sensor seedha 200 Megapixel Ultra-Vision sensor hai! Tera wahi purana 48MP abhi tak ghis raha hai?</p>
       </div>
 
       <div class="clash-card" style="border-right: 3px solid #cbd5e1; text-align:right;">
         <strong style="color:#f1f5f9; display:block; margin-bottom:4px;">iPhone Duo:</strong>
-        <p id="iphoneTalk">Photonic Engine aur natural colors dekhe hain kabhi? Tere 200MP oversharpened photo se lakh guna behtar video nikalta hoon!</p>
+        <p id="iphoneTalk">Megapixel ke dhabbe mat dikha mujhe! Mere 48MP Fusion Camera ke saath Photonic Engine natural skin tone deta hai!</p>
       </div>
 
       <div class="action-btns">
@@ -453,68 +503,68 @@
       </div>
     </div>
 
-    <!-- TAB 3: DAILY PRAYER -->
+    <!-- NEW TAB 3: DAILY PRAYER -->
     <div id="tab-prayer" class="tab-content">
-      <div style="margin-bottom:15px; text-align:left;">
-        <h3 style="font-size:18px; color:var(--text-main);">5 Waqt Ki Namaz Tracker</h3>
-        <p style="font-size:12px; color:var(--text-sub);">Ada karne ke baad checkbox par tick lagayein</p>
+      <div style="margin-bottom:18px; text-align:left;">
+        <h3 style="font-size:18px; color:var(--text-main);">Daily Prayer Tracker</h3>
+        <p style="font-size:12px; color:var(--text-sub);">Namaz ada karne ke baad checkbox par tick lagayein:</p>
       </div>
 
       <div class="prayer-list">
         <!-- 1. Fajr -->
         <div class="prayer-item" id="p-fajr">
-          <div class="prayer-info">
-            <span class="prayer-name">1. Fajr (فجر)</span>
-            <span class="prayer-rakat">4 Rakat (2 Sunnah, 2 Farz)</span>
+          <div>
+            <div class="prayer-title">1. Fajr (فجر)</div>
+            <div class="prayer-rakat">4 Rakat (2 Sunnah, 2 Farz)</div>
           </div>
           <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('fajr', this)">
         </div>
 
         <!-- 2. Zohar -->
         <div class="prayer-item" id="p-zohar">
-          <div class="prayer-info">
-            <span class="prayer-name">2. Zohar (ظهر)</span>
-            <span class="prayer-rakat">12 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl)</span>
+          <div>
+            <div class="prayer-title">2. Zohar (ظهر)</div>
+            <div class="prayer-rakat">12 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl)</div>
           </div>
           <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('zohar', this)">
         </div>
 
         <!-- 3. Asar -->
         <div class="prayer-item" id="p-asar">
-          <div class="prayer-info">
-            <span class="prayer-name">3. Asar (عصر)</span>
-            <span class="prayer-rakat">8 Rakat (4 Sunnah Ghair Muakkadah, 4 Farz)</span>
+          <div>
+            <div class="prayer-title">3. Asar (عصر)</div>
+            <div class="prayer-rakat">8 Rakat (4 Sunnah Ghair Muakkadah, 4 Farz)</div>
           </div>
           <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('asar', this)">
         </div>
 
         <!-- 4. Maghrib -->
         <div class="prayer-item" id="p-maghrib">
-          <div class="prayer-info">
-            <span class="prayer-name">4. Maghrib (مغرب)</span>
-            <span class="prayer-rakat">7 Rakat (3 Farz, 2 Sunnah, 2 Nafl)</span>
+          <div>
+            <div class="prayer-title">4. Maghrib (مغرب)</div>
+            <div class="prayer-rakat">7 Rakat (3 Farz, 2 Sunnah, 2 Nafl)</div>
           </div>
           <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('maghrib', this)">
         </div>
 
         <!-- 5. Isha -->
         <div class="prayer-item" id="p-isha">
-          <div class="prayer-info">
-            <span class="prayer-name">5. Isha (عشاء)</span>
-            <span class="prayer-rakat">17 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl, 3 Witr, 2 Nafl)</span>
+          <div>
+            <div class="prayer-title">5. Isha (عشاء)</div>
+            <div class="prayer-rakat">17 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl, 3 Witr, 2 Nafl)</div>
           </div>
           <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('isha', this)">
         </div>
       </div>
 
       <div style="margin-top:20px;">
-        <button class="action-btn btn-reset" style="width:100%;" onclick="resetPrayers()">Reset All Prayers</button>
+        <button class="action-btn btn-reset" style="width:100%;" onclick="resetPrayers()">Reset Prayers</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Tab Switching
+    // Tab Navigation
     function openTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -527,10 +577,22 @@
       document.documentElement.setAttribute("data-theme", themeName);
       localStorage.setItem("app_theme", themeName);
       document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.remove("active"));
-      if (btnElement) btnElement.classList.add("active");
+      if (btnElement) {
+        btnElement.classList.add("active");
+      } else {
+        const themeMap = {
+          "luxury-gold": ".btn-gold",
+          "supreme-green": ".btn-green",
+          "rainbow": ".btn-rainbow",
+          "royal-blue": ".btn-blue",
+          "crimson-red": ".btn-red"
+        };
+        const activeBtn = document.querySelector(themeMap[themeName]);
+        if (activeBtn) activeBtn.classList.add("active");
+      }
     }
 
-    // Tab 1: Zikr Setup
+    // Tab 1: Daily Zikr Logic
     const zikrList = [
       { arabic: "سُبْحَانَ اللّٰهِ", name: "SubhanAllah", meaning: "Allah har aib aur naqas se paak hai.", target: 33 },
       { arabic: "اَلْحَمْدُ لِلّٰهِ", name: "Alhamdulillah", meaning: "Tamam tareefein Allah ke liye hain.", target: 33 },
@@ -541,44 +603,45 @@
       { arabic: "أَسْتَغْفِرُ اللّٰهَ", name: "Astaghfirullah", meaning: "Main Allah se apne gunaaho ki maafi maangta hoon.", target: 100 }
     ];
 
-    let currentZikr = 6;
+    let currentIndex = 6;
     let counts = JSON.parse(localStorage.getItem("daily_zikr_counts")) || {};
+    let savedTheme = localStorage.getItem("app_theme") || "luxury-gold";
 
-    function updateZikrUI() {
-      const z = zikrList[currentZikr];
-      document.getElementById("arabicText").innerText = z.arabic;
-      document.getElementById("translitText").innerText = z.name;
-      document.getElementById("meaningText").innerText = z.meaning;
-      document.getElementById("targetText").innerText = `Recommended Target: ${z.target} Martaba`;
-      document.getElementById("countVal").innerText = counts[currentZikr] || 0;
+    function updateUI() {
+      const zikr = zikrList[currentIndex];
+      document.getElementById("arabicText").innerText = zikr.arabic;
+      document.getElementById("translitText").innerText = zikr.name;
+      document.getElementById("meaningText").innerText = zikr.meaning;
+      document.getElementById("targetText").innerText = `Recommended Target: ${zikr.target} Martaba`;
+      document.getElementById("countVal").innerText = counts[currentIndex] || 0;
     }
 
     function switchZikr() {
-      currentZikr = parseInt(document.getElementById("zikrSelect").value);
-      updateZikrUI();
+      currentIndex = parseInt(document.getElementById("zikrSelect").value);
+      updateUI();
     }
 
     function incrementCount() {
-      if (!counts[currentZikr]) counts[currentZikr] = 0;
-      counts[currentZikr]++;
+      if (!counts[currentIndex]) counts[currentIndex] = 0;
+      counts[currentIndex]++;
       localStorage.setItem("daily_zikr_counts", JSON.stringify(counts));
-      updateZikrUI();
+      updateUI();
       if (navigator.vibrate) navigator.vibrate(30);
     }
 
     function resetCount() {
-      if (confirm(`Kya aap ${zikrList[currentZikr].name} ka count reset karna chahte hain?`)) {
-        counts[currentZikr] = 0;
+      if (confirm(`Kya aap ${zikrList[currentIndex].name} ka count reset karna chahte hain?`)) {
+        counts[currentIndex] = 0;
         localStorage.setItem("daily_zikr_counts", JSON.stringify(counts));
-        updateZikrUI();
+        updateUI();
       }
     }
 
-    // Tab 2: Tech Clash Setup
+    // Tab 2: Tech Clash Logic
     let clashIndex = 0;
     const clashes = [
-      { part: 1, topic: "Camera Resolution", s: "Mera 200 Megapixel Ultra-Vision sensor hai! Tera 48MP abhi tak chal raha hai?", i: "Mere 48MP Photonic Engine aur natural colors tere oversharpened photo ko hara dete hain!" },
-      { part: 2, topic: "Folding Hinge", s: "Main 8.2-inch ka seamless Dynamic AMOLED banta hoon zero gap ke saath!", i: "Mera Dual-Glass Micro-Hinge 360 degree magnetic snap ke sath wrinkle-free rehta hai!" },
+      { part: 1, topic: "Camera Resolution", s: "Dekh chote, mera primary sensor seedha 200 Megapixel Ultra-Vision sensor hai! Tera wahi purana 48MP abhi tak ghis raha hai?", i: "Megapixel ke dhabbe mat dikha mujhe! Mere 48MP Fusion Camera ke saath Photonic Engine natural skin tone deta hai!" },
+      { part: 2, topic: "Folding Hinge", s: "Main 8.2-inch ka seamless Dynamic AMOLED 2X banta hoon zero gap ke saath!", i: "Mera Dual-Glass Micro-Hinge 360 degree magnetic snap ke sath wrinkle-free rehta hai!" },
       { part: 3, topic: "Processor", s: "Snapdragon 8 Elite Extreme 4.47GHz ke saath benchmarks me aag laga deta hoon!", i: "Apple A20 Pro Bionic 2nm bina phone garam kiye sustained gaming deta hai!" }
     ];
 
@@ -595,7 +658,7 @@
     function nextClash() { if (clashIndex < clashes.length - 1) { clashIndex++; renderClash(); } }
     function prevClash() { if (clashIndex > 0) { clashIndex--; renderClash(); } }
 
-    // Tab 3: Daily Prayer Tracker Setup
+    // Tab 3: Daily Prayer Logic
     let prayers = JSON.parse(localStorage.getItem("daily_prayers_done")) || {
       fajr: false, zohar: false, asar: false, maghrib: false, isha: false
     };
@@ -628,8 +691,9 @@
       }
     }
 
-    // Init Page
-    updateZikrUI();
+    // Page Init
+    setTheme(savedTheme);
+    updateUI();
     renderClash();
     loadPrayers();
   </script>
