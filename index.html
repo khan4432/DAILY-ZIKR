@@ -44,11 +44,12 @@
     <header class="bg-slate-900/90 backdrop-blur border-b border-[#00ffcc] shadow-lg py-4 px-6 mb-6">
         <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
             <h1 class="text-2xl font-bold neon-title flex items-center gap-2">
-                📿 Daily Zikr Portal (Imran, Saima, Huzaifa, Ali)
+                📿 Daily Zikr & Sawaab Portal
             </h1>
-            <nav class="flex gap-2 bg-slate-900 p-1 rounded-lg border border-slate-700">
-                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-4 py-2 rounded-md font-medium text-sm transition neon-btn">Daily Tracker</button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Combined Analytics</button>
+            <nav class="flex flex-wrap gap-2 bg-slate-900 p-1 rounded-lg border border-slate-700">
+                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded-md font-medium text-sm transition neon-btn">Daily Zikr</button>
+                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Extra Sawaab</button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Analytics</button>
             </nav>
         </div>
     </header>
@@ -58,7 +59,7 @@
         <!-- TAB 1: DAILY TRACKER -->
         <section id="tab-tracker" class="space-y-6">
             <div class="neon-box rounded-xl p-6 shadow-2xl">
-                <h2 class="text-xl font-semibold mb-4 text-[#00ffcc]">Mark Zikr Progress</h2>
+                <h2 class="text-xl font-semibold mb-4 text-[#00ffcc]">Mark Daily Zikr Progress</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                     <div>
@@ -80,22 +81,59 @@
                     <!-- Populated via JS -->
                 </div>
 
-                <button onclick="saveProgress()" class="w-full neon-btn py-3 rounded-lg transition shadow-lg">
-                    Save Progress
+                <button onclick="saveProgress('zikrData', zikrs, 'zikr')" class="w-full neon-btn py-3 rounded-lg transition shadow-lg">
+                    Save Daily Zikr Progress
                 </button>
             </div>
         </section>
 
-        <!-- TAB 2: COMBINED ANALYTICS & CHARTS -->
+        <!-- TAB 2: EXTRA SAWAAB -->
+        <section id="tab-extrasawaab" class="hidden space-y-6">
+            <div class="neon-box rounded-xl p-6 shadow-2xl">
+                <h2 class="text-xl font-semibold mb-4 text-[#00ffcc]">Mark Extra Sawaab Progress</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Person:</label>
+                        <select id="personSelectExtra" class="w-full bg-slate-900 border border-[#00ffcc] rounded-lg p-2.5 text-white focus:ring-2 focus:ring-[#00ffcc] outline-none">
+                            <option value="Imran">Imran</option>
+                            <option value="Saima">Saima</option>
+                            <option value="Huzaifa">Huzaifa</option>
+                            <option value="Ali">Ali</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Date:</label>
+                        <input type="date" id="dateSelectExtra" class="w-full bg-slate-900 border border-[#00ffcc] rounded-lg p-2.5 text-white focus:ring-2 focus:ring-[#00ffcc] outline-none">
+                    </div>
+                </div>
+
+                <div class="space-y-3 mb-6" id="extraList">
+                    <!-- Populated via JS -->
+                </div>
+
+                <button onclick="saveProgress('extraData', extras, 'extra')" class="w-full neon-btn py-3 rounded-lg transition shadow-lg">
+                    Save Extra Sawaab Progress
+                </button>
+            </div>
+        </section>
+
+        <!-- TAB 3: COMBINED ANALYTICS & CHARTS -->
         <section id="tab-analytics" class="hidden space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-center neon-box p-4 rounded-xl gap-4 shadow-2xl">
-                <h2 class="text-xl font-semibold text-[#00ffcc]">All 4 Persons Neon Comparison Chart</h2>
-                <select id="timeframeSelect" onchange="updateCharts()" class="bg-slate-900 border border-[#00ffcc] rounded-lg p-2.5 text-white text-sm outline-none">
-                    <option value="daily">Daily View (Today)</option>
-                    <option value="weekly">Weekly View (Last 7 Days)</option>
-                    <option value="monthly">Monthly View (This Month)</option>
-                    <option value="yearly">Yearly View (This Year)</option>
-                </select>
+                <h2 class="text-xl font-semibold text-[#00ffcc]">Comparison Chart</h2>
+                <div class="flex gap-2">
+                    <select id="categorySelect" onchange="updateCharts()" class="bg-slate-900 border border-[#00ffcc] rounded-lg p-2 text-white text-sm outline-none">
+                        <option value="zikr">Daily Zikr</option>
+                        <option value="extra">Extra Sawaab</option>
+                    </select>
+                    <select id="timeframeSelect" onchange="updateCharts()" class="bg-slate-900 border border-[#00ffcc] rounded-lg p-2 text-white text-sm outline-none">
+                        <option value="daily">Daily View</option>
+                        <option value="weekly">Weekly View</option>
+                        <option value="monthly">Monthly View</option>
+                        <option value="yearly">Yearly View</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Summary Cards for All 4 -->
@@ -115,6 +153,7 @@
 
     <script>
         const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
+        
         const zikrs = [
             "1. 1st Kalma",
             "2. 4th Kalma",
@@ -125,8 +164,18 @@
             "7. Astagfirullah (100x)"
         ];
 
-        // Initialize Date
-        document.getElementById('dateSelect').valueAsDate = new Date();
+        const extras = [
+            "1. Quran Reading",
+            "2. Tahajjud namaaz",
+            "3. Witr namaaz",
+            "4. Nafil namaaz",
+            "5. Sunnat namaaz"
+        ];
+
+        // Initialize Dates
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('dateSelect').value = todayStr;
+        document.getElementById('dateSelectExtra').value = todayStr;
 
         // Render Zikr Checkboxes
         const zikrListEl = document.getElementById('zikrList');
@@ -139,62 +188,75 @@
             `;
         });
 
+        // Render Extra Sawaab Checkboxes
+        const extraListEl = document.getElementById('extraList');
+        extras.forEach((extra, index) => {
+            extraListEl.innerHTML += `
+                <label class="flex items-center gap-3 p-3 bg-slate-900/80 border border-slate-700 rounded-lg hover:border-[#00ffcc] cursor-pointer transition">
+                    <input type="checkbox" id="extra-${index}" class="w-5 h-5 accent-[#00ffcc] rounded bg-slate-800 border-slate-600">
+                    <span class="text-slate-200 font-medium">${extra}</span>
+                </label>
+            `;
+        });
+
         function switchTab(tab) {
-            if(tab === 'tracker') {
-                document.getElementById('tab-tracker').classList.remove('hidden');
-                document.getElementById('tab-analytics').classList.add('hidden');
-                document.getElementById('btn-tracker').className = "px-4 py-2 rounded-md font-medium text-sm transition neon-btn";
-                document.getElementById('btn-analytics').className = "px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
-            } else {
-                document.getElementById('tab-tracker').classList.add('hidden');
-                document.getElementById('tab-analytics').classList.remove('hidden');
-                document.getElementById('btn-analytics').className = "px-4 py-2 rounded-md font-medium text-sm transition neon-btn";
-                document.getElementById('btn-tracker').className = "px-4 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
-                updateCharts();
-            }
+            ['tracker', 'extrasawaab', 'analytics'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`btn-${t}`).className = "px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`btn-${tab}`).className = "px-3 py-2 rounded-md font-medium text-sm transition neon-btn";
+            if(tab === 'analytics') updateCharts();
         }
 
-        function getData() {
-            return JSON.parse(localStorage.getItem('zikrData') || '{}');
+        function getData(storageKey) {
+            return JSON.parse(localStorage.getItem(storageKey) || '{}');
         }
 
-        function saveProgress() {
-            const person = document.getElementById('personSelect').value;
-            const date = document.getElementById('dateSelect').value;
-            const data = getData();
+        function saveProgress(storageKey, listArr, prefix) {
+            const person = document.getElementById(prefix === 'zikr' ? 'personSelect' : 'personSelectExtra').value;
+            const date = document.getElementById(prefix === 'zikr' ? 'dateSelect' : 'dateSelectExtra').value;
+            const data = getData(storageKey);
 
             if(!data[person]) data[person] = {};
             
             const checks = [];
-            zikrs.forEach((_, index) => {
-                checks.push(document.getElementById(`zikr-${index}`).checked);
+            listArr.forEach((_, index) => {
+                checks.push(document.getElementById(`${prefix}-${index}`).checked);
             });
 
             data[person][date] = checks;
-            localStorage.setItem('zikrData', JSON.stringify(data));
-            alert('Zikr progress saved successfully!');
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            alert('Progress saved successfully!');
         }
 
-        document.getElementById('personSelect').addEventListener('change', loadFormState);
-        document.getElementById('dateSelect').addEventListener('change', loadFormState);
+        function loadFormState(storageKey, listArr, prefix, personId, dateId) {
+            const person = document.getElementById(personId).value;
+            const date = document.getElementById(dateId).value;
+            const data = getData(storageKey);
 
-        function loadFormState() {
-            const person = document.getElementById('personSelect').value;
-            const date = document.getElementById('dateSelect').value;
-            const data = getData();
-
-            const checks = data[person]?.[date] || new Array(zikrs.length).fill(false);
-            zikrs.forEach((_, index) => {
-                document.getElementById(`zikr-${index}`).checked = checks[index] || false;
+            const checks = data[person]?.[date] || new Array(listArr.length).fill(false);
+            listArr.forEach((_, index) => {
+                document.getElementById(`${prefix}-${index}`).checked = checks[index] || false;
             });
         }
-        loadFormState();
+
+        document.getElementById('personSelect').addEventListener('change', () => loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect'));
+        document.getElementById('dateSelect').addEventListener('change', () => loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect'));
+        
+        document.getElementById('personSelectExtra').addEventListener('change', () => loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra'));
+        document.getElementById('dateSelectExtra').addEventListener('change', () => loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra'));
+
+        loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
+        loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
 
         let zikrChart = null;
 
         function updateCharts() {
+            const category = document.getElementById('categorySelect').value;
             const timeframe = document.getElementById('timeframeSelect').value;
-            const data = getData();
+            const storageKey = category === 'zikr' ? 'zikrData' : 'extraData';
+            const data = getData(storageKey);
             const summaryCardsEl = document.getElementById('summaryCards');
             summaryCardsEl.innerHTML = '';
 
@@ -241,7 +303,6 @@
                 return pct;
             });
 
-            // Render Neon Chart for all 4 persons
             const ctx = document.getElementById('zikrChart').getContext('2d');
             if (zikrChart) zikrChart.destroy();
 
@@ -250,7 +311,7 @@
                 data: {
                     labels: persons,
                     datasets: [{
-                        label: `All 4 Persons - ${timeframe.toUpperCase()} Completion (%)`,
+                        label: `${category.toUpperCase()} - ${timeframe.toUpperCase()} Completion (%)`,
                         data: percentages,
                         backgroundColor: [
                             'rgba(0, 255, 204, 0.85)', 
