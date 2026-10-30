@@ -8,18 +8,22 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96));
+            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.85), rgba(5, 2, 15, 0.90));
             --primary: #ff007f;
             --primary-hover: #e60073;
             --box-bg: rgba(18, 10, 35, 0.92);
             --shadow: rgba(255, 0, 127, 0.45);
         }
         body {
-            background: var(--bg-grad), url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-            background-size: cover; background-attachment: fixed; color: #ffffff;
+            /* Left side Lamborghini aesthetic gradient/overlay, Right side Ferrari red aesthetic */
+            background: var(--bg-grad), 
+                        linear-gradient(90deg, rgba(0, 200, 255, 0.15) 0%, rgba(255, 0, 0, 0.15) 100%),
+                        url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #ffffff;
         }
         .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
-        .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); }
+        .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); backdrop-filter: blur(8px); }
         .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
         .theme-btn:hover { background: var(--primary-hover); box-shadow: 0 0 30px var(--shadow); }
     </style>
