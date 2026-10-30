@@ -59,8 +59,8 @@
                 <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
                 <input type="date" id="dateSelect" class="bg-slate-900 border rounded p-2 text-white text-sm">
             </div>
-            <div id="zikrList" class="space-y-2"></div>
-            <button onclick="save('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect')" class="w-full theme-btn py-2.5 rounded text-sm">Save Zikr Progress</button>
+            <div id="zikrList" class="space-y-3"></div>
+            <button onclick="saveZikr()" class="w-full theme-btn py-2.5 rounded text-sm">Save Zikr Progress</button>
         </section>
 
         <!-- TAB 2: EXTRA SAWAAB -->
@@ -138,7 +138,7 @@
         document.getElementById('themeSelector').value = savedTheme;
 
         const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
-        const zikrs = ["1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", "4. Subhanallahi wa bihamdihi (100x)", "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"];
+        const zikrs = ["1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", "4. Subhanallahi wa bihamdihi, subhanallahil azeem", "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"];
         const extras = ["1. Quran Reading", "2. Tahajjud namaaz", "3. Witr namaaz", "4. Nafil namaaz", "5. Sunnat namaaz"];
         const namaazs = ["1. Fajr", "2. Asar", "3. Zohar", "4. Maghrib", "5. Isha"];
 
@@ -147,6 +147,28 @@
         document.getElementById('dateSelectExtra').value = today;
         document.getElementById('dateSelectNamaaz').value = today;
 
+        function renderZikr() {
+            const el = document.getElementById('zikrList');
+            el.innerHTML = '';
+            zikrs.forEach((item, i) => {
+                if(i === 3) {
+                    el.innerHTML += `
+                        <div class="p-2.5 bg-slate-900/80 border border-slate-700 rounded space-y-2">
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" id="zikr-${i}" class="w-4 h-4 accent-[var(--primary)]">
+                                <span class="text-sm font-medium">${item}</span>
+                            </label>
+                            <div class="flex items-center justify-between pl-7">
+                                <span class="text-xs text-slate-400">Kitni baar padha (Count):</span>
+                                <input type="number" id="zikr-count-${i}" min="0" placeholder="e.g. 100" class="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white w-24 text-center outline-none focus:border-[var(--primary)]">
+                            </div>
+                        </div>`;
+                } else {
+                    el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="zikr-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm">${item}</span></label>`;
+                }
+            });
+        }
+
         function render(list, id, prefix) {
             const el = document.getElementById(id);
             el.innerHTML = '';
@@ -154,7 +176,7 @@
                 el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm">${item}</span></label>`;
             });
         }
-        render(zikrs, 'zikrList', 'zikr');
+        renderZikr();
         render(extras, 'extraList', 'extra');
         render(namaazs, 'namaazList', 'namaaz');
 
@@ -168,6 +190,20 @@
 
         function getData(key) { return JSON.parse(localStorage.getItem(key) || '{}'); }
 
+        function saveZikr() {
+            const p = document.getElementById('personSelect').value;
+            const d = document.getElementById('dateSelect').value;
+            const data = getData('zikrData');
+            if(!data[p]) data[p] = {};
+            
+            const checks = zikrs.map((_, i) => document.getElementById(`zikr-${i}`).checked);
+            const countVal = document.getElementById('zikr-count-3').value || '0';
+            
+            data[p][d] = { checks: checks, subhanallahCount: countVal };
+            localStorage.setItem('zikrData', JSON.stringify(data));
+            alert('Zikr progress & count saved successfully!');
+        }
+
         function save(key, list, prefix, pId, dId) {
             const p = document.getElementById(pId).value;
             const d = document.getElementById(dId).value;
@@ -178,59 +214,96 @@
             alert('Saved successfully!');
         }
 
-        function loadState(key, list, prefix, pId, dId) {
+        function loadState() {
+            const p = document.getElementById('personSelect').value;
+            const d = document.getElementById('dateSelect').value;
+            const saved = getData('zikrData')[p]?.[d];
+            
+            const checks = saved?.checks || new Array(zikrs.length).fill(false);
+            zikrs.forEach((_, i) => document.getElementById(`zikr-${i}`).checked = checks[i]);
+            document.getElementById('zikr-count-3').value = saved?.subhanallahCount || '';
+        }
+
+        function loadStateGeneric(key, list, prefix, pId, dId) {
             const p = document.getElementById(pId).value;
             const d = document.getElementById(dId).value;
             const checks = getData(key)[p]?.[d] || new Array(list.length).fill(false);
             list.forEach((_, i) => document.getElementById(`${prefix}-${i}`).checked = checks[i]);
         }
 
-        document.getElementById('personSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        document.getElementById('dateSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        document.getElementById('personSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-        document.getElementById('dateSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-        document.getElementById('personSelectNamaaz').onchange = () => loadState('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
-        document.getElementById('dateSelectNamaaz').onchange = () => loadState('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
+        document.getElementById('personSelect').onchange = loadState;
+        document.getElementById('dateSelect').onchange = loadState;
+        document.getElementById('personSelectExtra').onchange = () => loadStateGeneric('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
+        document.getElementById('dateSelectExtra').onchange = () => loadStateGeneric('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
+        document.getElementById('personSelectNamaaz').onchange = () => loadStateGeneric('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
+        document.getElementById('dateSelectNamaaz').onchange = () => loadStateGeneric('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
 
-        loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-        loadState('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
+        loadState();
+        loadStateGeneric('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
+        loadStateGeneric('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
 
         let chart = null;
         function drawChart() {
             const cat = document.getElementById('catSelect').value;
             const tf = document.getElementById('timeSelect').value;
-            const key = cat === 'zikr' ? 'zikrData' : (cat === 'extra' ? 'extraData' : 'namaazData');
-            const data = getData(key);
             const cards = document.getElementById('cards');
             cards.innerHTML = '';
 
-            const pcts = persons.map(p => {
-                const pData = data[p] || {};
-                let comp = 0, poss = 0, now = new Date();
-                Object.keys(pData).forEach(dStr => {
-                    const d = new Date(dStr);
-                    let inc = false;
-                    if (tf === 'daily' && dStr === today) inc = true;
-                    else if (tf === 'weekly' && Math.abs(now - d) / 86400000 <= 7) inc = true;
-                    else if (tf === 'monthly' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) inc = true;
-                    else if (tf === 'yearly' && d.getFullYear() === now.getFullYear()) inc = true;
-                    if (inc) pData[dStr].forEach(v => { if(v) comp++; poss++; });
+            if(cat === 'zikr') {
+                const data = getData('zikrData');
+                const pcts = persons.map(p => {
+                    const pData = data[p] || {};
+                    let comp = 0, poss = 0, now = new Date();
+                    Object.keys(pData).forEach(dStr => {
+                        const d = new Date(dStr);
+                        let inc = false;
+                        if (tf === 'daily' && dStr === today) inc = true;
+                        else if (tf === 'weekly' && Math.abs(now - d) / 86400000 <= 7) inc = true;
+                        else if (tf === 'monthly' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) inc = true;
+                        else if (tf === 'yearly' && d.getFullYear() === now.getFullYear()) inc = true;
+                        if (inc && pData[dStr].checks) {
+                            pData[dStr].checks.forEach(v => { if(v) comp++; poss++; });
+                        }
+                    });
+                    const pct = poss > 0 ? Math.round((comp / poss) * 100) : 0;
+                    cards.innerHTML += `<div class="theme-box p-3 rounded text-center"><p class="text-xs text-slate-300">${p}</p><p class="text-2xl font-bold theme-title">${pct}%</p></div>`;
+                    return pct;
                 });
-                const pct = poss > 0 ? Math.round((comp / poss) * 100) : 0;
-                cards.innerHTML += `<div class="theme-box p-3 rounded text-center"><p class="text-xs text-slate-300">${p}</p><p class="text-2xl font-bold theme-title">${pct}%</p></div>`;
-                return pct;
-            });
-
-            if (chart) chart.destroy();
-            chart = new Chart(document.getElementById('myChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: persons,
-                    datasets: [{ label: 'Completion %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
-            });
+                if (chart) chart.destroy();
+                chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                    type: 'bar',
+                    data: { labels: persons, datasets: [{ label: 'Zikr Completion %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+                });
+            } else {
+                const key = cat === 'extra' ? 'extraData' : 'namaazData';
+                const list = cat === 'extra' ? extras : namaazs;
+                const data = getData(key);
+                const pcts = persons.map(p => {
+                    const pData = data[p] || {};
+                    let comp = 0, poss = 0, now = new Date();
+                    Object.keys(pData).forEach(dStr => {
+                        const d = new Date(dStr);
+                        let inc = false;
+                        if (tf === 'daily' && dStr === today) inc = true;
+                        else if (tf === 'weekly' && Math.abs(now - d) / 86400000 <= 7) inc = true;
+                        else if (tf === 'monthly' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) inc = true;
+                        else if (tf === 'yearly' && d.getFullYear() === now.getFullYear()) inc = true;
+                        if (inc && Array.isArray(pData[dStr])) {
+                            pData[dStr].forEach(v => { if(v) comp++; poss++; });
+                        }
+                    });
+                    const pct = poss > 0 ? Math.round((comp / poss) * 100) : 0;
+                    cards.innerHTML += `<div class="theme-box p-3 rounded text-center"><p class="text-xs text-slate-300">${p}</p><p class="text-2xl font-bold theme-title">${pct}%</p></div>`;
+                    return pct;
+                });
+                if (chart) chart.destroy();
+                chart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                    type: 'bar',
+                    data: { labels: persons, datasets: [{ label: 'Completion %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
+                });
+            }
         }
     </script>
 </body>
