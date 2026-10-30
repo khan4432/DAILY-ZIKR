@@ -1,210 +1,637 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur-Latn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Zikr & Sawaab Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.85), rgba(5, 2, 15, 0.90));
-            --primary: #ff007f;
-            --primary-hover: #e60073;
-            --box-bg: rgba(18, 10, 35, 0.92);
-            --shadow: rgba(255, 0, 127, 0.45);
-        }
-        body {
-            /* Left side Lamborghini aesthetic gradient/overlay, Right side Ferrari red aesthetic */
-            background: var(--bg-grad), 
-                        linear-gradient(90deg, rgba(0, 200, 255, 0.15) 0%, rgba(255, 0, 0, 0.15) 100%),
-                        url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: #ffffff;
-        }
-        .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
-        .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); backdrop-filter: blur(8px); }
-        .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
-        .theme-btn:hover { background: var(--primary-hover); box-shadow: 0 0 30px var(--shadow); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Tab Hub - Zikr, Clash & Daily Prayer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* 1. Luxury Gold */
+    :root[data-theme="luxury-gold"] {
+      --card-bg: rgba(20, 23, 29, 0.92);
+      --accent: #d4af37;
+      --accent-glow: rgba(212, 175, 55, 0.4);
+      --accent-dark: #aa8c2c;
+      --border-color: #2e2616;
+      --text-main: #f8fafc;
+      --text-sub: #d1b87a;
+      --counter-text: #0b0c10;
+    }
+
+    /* 2. Supreme Green */
+    :root[data-theme="supreme-green"] {
+      --card-bg: rgba(7, 43, 30, 0.92);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.45);
+      --accent-dark: #059669;
+      --border-color: #0f5139;
+      --text-main: #f8fafc;
+      --text-sub: #6ee7b7;
+      --counter-text: #041710;
+    }
+
+    /* 3. Rainbow Theme */
+    :root[data-theme="rainbow"] {
+      --card-bg: rgba(24, 27, 38, 0.92);
+      --accent: linear-gradient(135deg, #ff007f, #7928ca, #0070f3, #00dfd8);
+      --accent-glow: rgba(255, 0, 128, 0.4);
+      --accent-dark: #7928ca;
+      --border-color: #3b2a54;
+      --text-main: #ffffff;
+      --text-sub: #c084fc;
+      --counter-text: #ffffff;
+    }
+
+    /* 4. Royal Blue */
+    :root[data-theme="royal-blue"] {
+      --card-bg: rgba(28, 37, 65, 0.92);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.45);
+      --accent-dark: #0284c7;
+      --border-color: #2a3a5f;
+      --text-main: #f8fafc;
+      --text-sub: #93c5fd;
+      --counter-text: #0b132b;
+    }
+
+    /* 5. Crimson Red */
+    :root[data-theme="crimson-red"] {
+      --card-bg: rgba(41, 14, 19, 0.92);
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.45);
+      --accent-dark: #b91c1c;
+      --border-color: #591622;
+      --text-main: #f8fafc;
+      --text-sub: #fca5a5;
+      --counter-text: #18080a;
+    }
+
+    /* Background: Half Lamborghini, Half Ferrari */
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      background-color: #050505;
+      overflow-x: hidden;
+    }
+
+    .split-bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Left Side: Lamborghini (Gold/Cyber Yellow Neon tint & wallpaper) */
+    .bg-half.lamborghini {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
+                  url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+      border-right: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    /* Right Side: Ferrari (Iconic Rosso Corsa Red tint & wallpaper) */
+    .bg-half.ferrari {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.85)),
+                  url('https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+      border-left: 2px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .container {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 550px;
+      padding: 24px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+      text-align: center;
+      color: var(--text-main);
+    }
+
+    /* Top Color Bar */
+    .theme-bar {
+      margin-bottom: 16px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 8px 10px;
+    }
+
+    .theme-bar-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-sub);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+      display: block;
+      text-align: left;
+    }
+
+    .theme-options {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .theme-btn {
+      padding: 6px 2px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+    }
+
+    .theme-btn.active {
+      border-color: #ffffff;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .btn-gold { color: #d4af37; border-color: #5c4d1c; }
+    .btn-green { color: #10b981; border-color: #0f5139; }
+    .btn-rainbow { background: linear-gradient(135deg, #ff007f, #00dfd8); color: #fff; border: none; }
+    .btn-blue { color: #38bdf8; border-color: #2a3a5f; }
+    .btn-red { color: #ef4444; border-color: #591622; }
+
+    /* Main Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 4px;
+      font-size: 13px;
+      font-weight: bold;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: var(--counter-text);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Common Components */
+    select {
+      width: 100%;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .zikr-display {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .arabic-text {
+      font-size: 30px;
+      color: var(--text-main);
+      margin-bottom: 6px;
+      direction: rtl;
+    }
+
+    .transliteration {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .meaning {
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+
+    .counter-circle {
+      width: 140px;
+      height: 140px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 25px var(--accent-glow);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .count-number {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--counter-text);
+      line-height: 1;
+    }
+
+    .count-label {
+      font-size: 11px;
+      color: var(--counter-text);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-reset {
+      background: #3f1d24;
+      color: #fca5a5;
+      border: 1px solid #7f1d1d;
+    }
+
+    .btn-tap {
+      background: var(--accent);
+      color: var(--counter-text);
+      font-weight: bold;
+    }
+
+    /* Tab 3: Daily Prayer Styles */
+    .prayer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .prayer-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+
+    .prayer-item.completed {
+      border-color: var(--accent);
+      background: rgba(0, 0, 0, 0.65);
+    }
+
+    .prayer-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .prayer-name {
+      font-weight: bold;
+      font-size: 16px;
+      color: var(--text-main);
+    }
+
+    .prayer-rakat {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .prayer-checkbox {
+      width: 22px;
+      height: 22px;
+      accent-color: #10b981;
+      cursor: pointer;
+    }
+
+    /* Tab 2: Tech Clash Mini Box */
+    .clash-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  </style>
 </head>
-<body class="min-h-screen font-sans p-4">
-    <div class="max-w-4xl mx-auto space-y-6">
-        <header class="theme-box p-4 rounded-xl flex justify-between items-center flex-wrap gap-4">
-            <h1 class="text-xl font-bold theme-title">📿 Zikr & Sawaab Portal</h1>
-            <div class="flex items-center gap-2 flex-wrap">
-                <select id="themeSelector" onchange="changeTheme(this.value)" class="bg-slate-900 border text-xs rounded p-2 text-white outline-none">
-                    <option value="cyberpunkneon">⚡ Cyberpunk Neon Glow (Exact)</option>
-                    <option value="emerald">💎 Emerald Cyan</option>
-                    <option value="gold">👑 Royal Gold</option>
-                    <option value="sapphire">🔷 Sapphire Blue</option>
-                    <option value="ruby">❤️ Ruby Crimson</option>
-                    <option value="amethyst">🔮 Royal Amethyst</option>
-                    <option value="rosegold">✨ Rose Gold</option>
-                    <option value="platinum">🪙 Platinum Silver</option>
-                    <option value="emeraldgreen">🌿 Imperial Emerald</option>
-                    <option value="sunset">🌅 Sunset Copper</option>
-                    <option value="cyber">⚡ Cyber Neon Luxe</option>
-                </select>
-                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn text-xs">Daily Zikr</button>
-                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">Extra Sawaab</button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">Analytics</button>
-            </div>
-        </header>
+<body>
 
-        <!-- TAB 1 -->
-        <section id="tab-tracker" class="theme-box p-6 rounded-xl space-y-4">
-            <h2 class="text-lg font-semibold theme-title">Mark Daily Zikr</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
-                <input type="date" id="dateSelect" class="bg-slate-900 border rounded p-2 text-white text-sm">
-            </div>
-            <div id="zikrList" class="space-y-2"></div>
-            <button onclick="save('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect')" class="w-full theme-btn py-2.5 rounded text-sm">Save Zikr</button>
-        </section>
+  <!-- Split Screen Background: Left Lamborghini | Right Ferrari -->
+  <div class="split-bg-container">
+    <div class="bg-half lamborghini"></div>
+    <div class="bg-half ferrari"></div>
+  </div>
 
-        <!-- TAB 2 -->
-        <section id="tab-extrasawaab" class="theme-box p-6 rounded-xl space-y-4 hidden">
-            <h2 class="text-lg font-semibold theme-title">Mark Extra Sawaab</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <select id="personSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
-                <input type="date" id="dateSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm">
-            </div>
-            <div id="extraList" class="space-y-2"></div>
-            <button onclick="save('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra')" class="w-full theme-btn py-2.5 rounded text-sm">Save Extra Sawaab</button>
-        </section>
-
-        <!-- TAB 3 -->
-        <section id="tab-analytics" class="theme-box p-6 rounded-xl space-y-4 hidden">
-            <div class="flex justify-between items-center flex-wrap gap-2">
-                <h2 class="text-lg font-semibold theme-title">Analytics</h2>
-                <div class="flex gap-2">
-                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs"><option value="zikr">Zikr</option><option value="extra">Extra Sawaab</option></select>
-                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="cards"></div>
-            <div class="relative h-72"><canvas id="myChart"></canvas></div>
-        </section>
+  <div class="container">
+    <!-- Top 5 Color Bar -->
+    <div class="theme-bar">
+      <span class="theme-bar-title">Chunein Color Theme:</span>
+      <div class="theme-options">
+        <button class="theme-btn btn-gold active" onclick="setTheme('luxury-gold', this)">1. Gold</button>
+        <button class="theme-btn btn-green" onclick="setTheme('supreme-green', this)">2. Green</button>
+        <button class="theme-btn btn-rainbow" onclick="setTheme('rainbow', this)">3. Rainbow</button>
+        <button class="theme-btn btn-blue" onclick="setTheme('royal-blue', this)">4. Blue</button>
+        <button class="theme-btn btn-red" onclick="setTheme('crimson-red', this)">5. Red</button>
+      </div>
     </div>
 
-    <script>
-        const themes = {
-            cyberpunkneon: { primary: "#ff007f", hover: "#e60073", box: "rgba(18, 10, 35, 0.92)", shadow: "rgba(255, 0, 127, 0.45)", bg: "linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96))" },
-            emerald: { primary: "#00ffcc", hover: "#00cca3", box: "rgba(13, 20, 38, 0.9)", shadow: "rgba(0, 255, 204, 0.2)", bg: "linear-gradient(rgba(5, 10, 25, 0.90), rgba(5, 10, 25, 0.94))" },
-            gold: { primary: "#d4af37", hover: "#b3922f", box: "rgba(30, 25, 15, 0.9)", shadow: "rgba(212, 175, 55, 0.25)", bg: "linear-gradient(rgba(15, 15, 15, 0.92), rgba(25, 20, 10, 0.95))" },
-            sapphire: { primary: "#3b82f6", hover: "#2563eb", box: "rgba(15, 23, 42, 0.9)", shadow: "rgba(59, 130, 246, 0.3)", bg: "linear-gradient(rgba(10, 15, 35, 0.90), rgba(5, 10, 25, 0.94))" },
-            ruby: { primary: "#ef4444", hover: "#dc2626", box: "rgba(35, 15, 15, 0.9)", shadow: "rgba(239, 68, 68, 0.3)", bg: "linear-gradient(rgba(30, 10, 10, 0.90), rgba(15, 5, 5, 0.94))" },
-            amethyst: { primary: "#a855f7", hover: "#9333ea", box: "rgba(25, 15, 35, 0.9)", shadow: "rgba(168, 85, 247, 0.3)", bg: "linear-gradient(rgba(20, 10, 30, 0.90), rgba(10, 5, 20, 0.94))" },
-            rosegold: { primary: "#fb7185", hover: "#f43f5e", box: "rgba(35, 18, 24, 0.9)", shadow: "rgba(251, 113, 133, 0.3)", bg: "linear-gradient(rgba(30, 15, 20, 0.90), rgba(15, 8, 10, 0.94))" },
-            platinum: { primary: "#e2e8f0", hover: "#cbd5e1", box: "rgba(30, 41, 59, 0.9)", shadow: "rgba(226, 232, 240, 0.2)", bg: "linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.94))" },
-            emeraldgreen: { primary: "#10b981", hover: "#059669", box: "rgba(10, 30, 20, 0.9)", shadow: "rgba(16, 185, 129, 0.3)", bg: "linear-gradient(rgba(5, 25, 15, 0.90), rgba(2, 15, 8, 0.94))" },
-            sunset: { primary: "#f97316", hover: "#ea580c", box: "rgba(35, 18, 10, 0.9)", shadow: "rgba(249, 115, 22, 0.3)", bg: "linear-gradient(rgba(30, 15, 5, 0.90), rgba(15, 8, 2, 0.94))" },
-            cyber: { primary: "#f43f5e", hover: "#e11d48", box: "rgba(20, 10, 40, 0.9)", shadow: "rgba(244, 63, 94, 0.4)", bg: "linear-gradient(rgba(10, 5, 30, 0.90), rgba(5, 2, 15, 0.94))" }
-        };
+    <!-- 3 Tabs Navigation -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="openTab('tab-zikr', this)">1. Daily Zikr</button>
+      <button class="tab-btn" onclick="openTab('tab-clash', this)">2. Tech Clash</button>
+      <button class="tab-btn" onclick="openTab('tab-prayer', this)">3. Daily Prayer</button>
+    </div>
 
-        function changeTheme(name) {
-            const t = themes[name] || themes.cyberpunkneon;
-            const r = document.documentElement;
-            r.style.setProperty('--primary', t.primary);
-            r.style.setProperty('--primary-hover', t.hover);
-            r.style.setProperty('--box-bg', t.box);
-            r.style.setProperty('--shadow', t.shadow);
-            r.style.setProperty('--bg-grad', t.bg);
-            localStorage.setItem('selectedTheme', name);
+    <!-- TAB 1: DAILY ZIKR -->
+    <div id="tab-zikr" class="tab-content active">
+      <select id="zikrSelect" onchange="switchZikr()">
+        <option value="0">1. SubhanAllah</option>
+        <option value="1">2. Alhamdulillah</option>
+        <option value="2">3. Allahu Akbar</option>
+        <option value="3">4. La ilaha illallah</option>
+        <option value="4">5. Durood Shareef</option>
+        <option value="5">6. La Hawla wa la Quwwata</option>
+        <option value="6" selected>7. Astaghfirullah</option>
+      </select>
+
+      <div class="zikr-display">
+        <div class="arabic-text" id="arabicText">أَسْتَغْفِرُ اللّٰهَ</div>
+        <div class="transliteration" id="translitText">Astaghfirullah</div>
+        <div class="meaning" id="meaningText">Main Allah se apne gunaaho ki maafi maangta hoon.</div>
+      </div>
+
+      <div class="counter-circle" onclick="incrementCount()">
+        <div class="count-number" id="countVal">0</div>
+        <div class="count-label">Tap Karein</div>
+      </div>
+
+      <div style="font-size:13px; color:var(--text-sub); margin-bottom:16px;" id="targetText">Target: 100 Martaba</div>
+
+      <div class="action-btns">
+        <button class="action-btn btn-reset" onclick="resetCount()">Reset</button>
+        <button class="action-btn btn-tap" onclick="incrementCount()">+1 Tap</button>
+      </div>
+    </div>
+
+    <!-- TAB 2: TECH CLASH -->
+    <div id="tab-clash" class="tab-content">
+      <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:12px; color:var(--text-sub);">
+        <span id="clashPartBadge">Part 1 of 24</span>
+        <span id="clashTopic">Camera Resolution</span>
+      </div>
+
+      <div class="clash-card" style="border-left: 3px solid #60a5fa;">
+        <strong style="color:#93c5fd; display:block; margin-bottom:4px;">Samsung Z Fold 8 Ultra:</strong>
+        <p id="samsungTalk">Mera 200 Megapixel Ultra-Vision camera 100x zoom deta hai! Tera 48MP abhi tak chal raha hai?</p>
+      </div>
+
+      <div class="clash-card" style="border-right: 3px solid #cbd5e1; text-align:right;">
+        <strong style="color:#f1f5f9; display:block; margin-bottom:4px;">iPhone Duo:</strong>
+        <p id="iphoneTalk">Photonic Engine aur natural colors dekhe hain kabhi? Tere 200MP oversharpened photo se lakh guna behtar video nikalta hoon!</p>
+      </div>
+
+      <div class="action-btns">
+        <button class="action-btn btn-reset" id="clashPrevBtn" onclick="prevClash()">Previous Part</button>
+        <button class="action-btn btn-tap" id="clashNextBtn" onclick="nextClash()">Next Part</button>
+      </div>
+    </div>
+
+    <!-- TAB 3: DAILY PRAYER -->
+    <div id="tab-prayer" class="tab-content">
+      <div style="margin-bottom:15px; text-align:left;">
+        <h3 style="font-size:18px; color:var(--text-main);">5 Waqt Ki Namaz Tracker</h3>
+        <p style="font-size:12px; color:var(--text-sub);">Ada karne ke baad checkbox par tick lagayein</p>
+      </div>
+
+      <div class="prayer-list">
+        <!-- 1. Fajr -->
+        <div class="prayer-item" id="p-fajr">
+          <div class="prayer-info">
+            <span class="prayer-name">1. Fajr (فجر)</span>
+            <span class="prayer-rakat">4 Rakat (2 Sunnah, 2 Farz)</span>
+          </div>
+          <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('fajr', this)">
+        </div>
+
+        <!-- 2. Zohar -->
+        <div class="prayer-item" id="p-zohar">
+          <div class="prayer-info">
+            <span class="prayer-name">2. Zohar (ظهر)</span>
+            <span class="prayer-rakat">12 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl)</span>
+          </div>
+          <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('zohar', this)">
+        </div>
+
+        <!-- 3. Asar -->
+        <div class="prayer-item" id="p-asar">
+          <div class="prayer-info">
+            <span class="prayer-name">3. Asar (عصر)</span>
+            <span class="prayer-rakat">8 Rakat (4 Sunnah Ghair Muakkadah, 4 Farz)</span>
+          </div>
+          <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('asar', this)">
+        </div>
+
+        <!-- 4. Maghrib -->
+        <div class="prayer-item" id="p-maghrib">
+          <div class="prayer-info">
+            <span class="prayer-name">4. Maghrib (مغرب)</span>
+            <span class="prayer-rakat">7 Rakat (3 Farz, 2 Sunnah, 2 Nafl)</span>
+          </div>
+          <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('maghrib', this)">
+        </div>
+
+        <!-- 5. Isha -->
+        <div class="prayer-item" id="p-isha">
+          <div class="prayer-info">
+            <span class="prayer-name">5. Isha (عشاء)</span>
+            <span class="prayer-rakat">17 Rakat (4 Sunnah, 4 Farz, 2 Sunnah, 2 Nafl, 3 Witr, 2 Nafl)</span>
+          </div>
+          <input type="checkbox" class="prayer-checkbox" onchange="togglePrayer('isha', this)">
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="action-btn btn-reset" style="width:100%;" onclick="resetPrayers()">Reset All Prayers</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tab Switching
+    function openTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // Themes
+    function setTheme(themeName, btnElement) {
+      document.documentElement.setAttribute("data-theme", themeName);
+      localStorage.setItem("app_theme", themeName);
+      document.querySelectorAll(".theme-btn").forEach(btn => btn.classList.remove("active"));
+      if (btnElement) btnElement.classList.add("active");
+    }
+
+    // Tab 1: Zikr Setup
+    const zikrList = [
+      { arabic: "سُبْحَانَ اللّٰهِ", name: "SubhanAllah", meaning: "Allah har aib aur naqas se paak hai.", target: 33 },
+      { arabic: "اَلْحَمْدُ لِلّٰهِ", name: "Alhamdulillah", meaning: "Tamam tareefein Allah ke liye hain.", target: 33 },
+      { arabic: "اَللّٰهُ أَكْبَرُ", name: "Allahu Akbar", meaning: "Allah sabse bada hai.", target: 34 },
+      { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ", name: "La ilaha illallah", meaning: "Allah ke siwa koi ibadat ke layaq nahi.", target: 100 },
+      { arabic: "اَللّٰهُمَّ صَلِّ عَلٰى مُحَمَّدٍ", name: "Allahumma Salli Ala Muhammad", meaning: "Aye Allah, Muhammad (PBUH) par rehmat naazil farma.", target: 100 },
+      { arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللّٰهِ", name: "La Hawla wa la Quwwata illa Billah", meaning: "Gunaaho se bachne aur nek kaam karne ki taaqat sirf Allah se hai.", target: 100 },
+      { arabic: "أَسْتَغْفِرُ اللّٰهَ", name: "Astaghfirullah", meaning: "Main Allah se apne gunaaho ki maafi maangta hoon.", target: 100 }
+    ];
+
+    let currentZikr = 6;
+    let counts = JSON.parse(localStorage.getItem("daily_zikr_counts")) || {};
+
+    function updateZikrUI() {
+      const z = zikrList[currentZikr];
+      document.getElementById("arabicText").innerText = z.arabic;
+      document.getElementById("translitText").innerText = z.name;
+      document.getElementById("meaningText").innerText = z.meaning;
+      document.getElementById("targetText").innerText = `Recommended Target: ${z.target} Martaba`;
+      document.getElementById("countVal").innerText = counts[currentZikr] || 0;
+    }
+
+    function switchZikr() {
+      currentZikr = parseInt(document.getElementById("zikrSelect").value);
+      updateZikrUI();
+    }
+
+    function incrementCount() {
+      if (!counts[currentZikr]) counts[currentZikr] = 0;
+      counts[currentZikr]++;
+      localStorage.setItem("daily_zikr_counts", JSON.stringify(counts));
+      updateZikrUI();
+      if (navigator.vibrate) navigator.vibrate(30);
+    }
+
+    function resetCount() {
+      if (confirm(`Kya aap ${zikrList[currentZikr].name} ka count reset karna chahte hain?`)) {
+        counts[currentZikr] = 0;
+        localStorage.setItem("daily_zikr_counts", JSON.stringify(counts));
+        updateZikrUI();
+      }
+    }
+
+    // Tab 2: Tech Clash Setup
+    let clashIndex = 0;
+    const clashes = [
+      { part: 1, topic: "Camera Resolution", s: "Mera 200 Megapixel Ultra-Vision sensor hai! Tera 48MP abhi tak chal raha hai?", i: "Mere 48MP Photonic Engine aur natural colors tere oversharpened photo ko hara dete hain!" },
+      { part: 2, topic: "Folding Hinge", s: "Main 8.2-inch ka seamless Dynamic AMOLED banta hoon zero gap ke saath!", i: "Mera Dual-Glass Micro-Hinge 360 degree magnetic snap ke sath wrinkle-free rehta hai!" },
+      { part: 3, topic: "Processor", s: "Snapdragon 8 Elite Extreme 4.47GHz ke saath benchmarks me aag laga deta hoon!", i: "Apple A20 Pro Bionic 2nm bina phone garam kiye sustained gaming deta hai!" }
+    ];
+
+    function renderClash() {
+      const c = clashes[clashIndex];
+      document.getElementById("clashPartBadge").innerText = `Part ${c.part} of ${clashes.length}`;
+      document.getElementById("clashTopic").innerText = c.topic;
+      document.getElementById("samsungTalk").innerText = c.s;
+      document.getElementById("iphoneTalk").innerText = c.i;
+      document.getElementById("clashPrevBtn").disabled = (clashIndex === 0);
+      document.getElementById("clashNextBtn").disabled = (clashIndex === clashes.length - 1);
+    }
+
+    function nextClash() { if (clashIndex < clashes.length - 1) { clashIndex++; renderClash(); } }
+    function prevClash() { if (clashIndex > 0) { clashIndex--; renderClash(); } }
+
+    // Tab 3: Daily Prayer Tracker Setup
+    let prayers = JSON.parse(localStorage.getItem("daily_prayers_done")) || {
+      fajr: false, zohar: false, asar: false, maghrib: false, isha: false
+    };
+
+    function loadPrayers() {
+      for (const [key, val] of Object.entries(prayers)) {
+        const item = document.getElementById(`p-${key}`);
+        if (item) {
+          const cb = item.querySelector("input");
+          cb.checked = val;
+          if (val) item.classList.add("completed");
+          else item.classList.remove("completed");
         }
-        const savedTheme = localStorage.getItem('selectedTheme') || 'cyberpunkneon';
-        changeTheme(savedTheme);
-        document.getElementById('themeSelector').value = savedTheme;
+      }
+    }
 
-        const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
-        const zikrs = ["1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", "4. Subhanallahi wa bihamdihi (100x)", "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"];
-        const extras = ["1. Quran Reading", "2. Tahajjud namaaz", "3. Witr namaaz", "4. Nafil namaaz", "5. Sunnat namaaz"];
+    function togglePrayer(name, cb) {
+      prayers[name] = cb.checked;
+      const item = document.getElementById(`p-${name}`);
+      if (cb.checked) item.classList.add("completed");
+      else item.classList.remove("completed");
+      localStorage.setItem("daily_prayers_done", JSON.stringify(prayers));
+    }
 
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('dateSelect').value = today;
-        document.getElementById('dateSelectExtra').value = today;
+    function resetPrayers() {
+      if (confirm("Kya aap saari 5 namazo ka status reset karna chahte hain?")) {
+        prayers = { fajr: false, zohar: false, asar: false, maghrib: false, isha: false };
+        localStorage.setItem("daily_prayers_done", JSON.stringify(prayers));
+        loadPrayers();
+      }
+    }
 
-        function render(list, id, prefix) {
-            const el = document.getElementById(id);
-            el.innerHTML = '';
-            list.forEach((item, i) => {
-                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm">${item}</span></label>`;
-            });
-        }
-        render(zikrs, 'zikrList', 'zikr');
-        render(extras, 'extraList', 'extra');
-
-        function switchTab(tab) {
-            ['tracker', 'extrasawaab', 'analytics'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
-                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium text-xs ${t === tab ? 'theme-btn' : 'bg-slate-800 text-slate-300'}`;
-            });
-            if(tab === 'analytics') drawChart();
-        }
-
-        function getData(key) { return JSON.parse(localStorage.getItem(key) || '{}'); }
-
-        function save(key, list, prefix, pId, dId) {
-            const p = document.getElementById(pId).value;
-            const d = document.getElementById(dId).value;
-            const data = getData(key);
-            if(!data[p]) data[p] = {};
-            data[p][d] = list.map((_, i) => document.getElementById(`${prefix}-${i}`).checked);
-            localStorage.setItem(key, JSON.stringify(data));
-            alert('Saved successfully!');
-        }
-
-        function loadState(key, list, prefix, pId, dId) {
-            const p = document.getElementById(pId).value;
-            const d = document.getElementById(dId).value;
-            const checks = getData(key)[p]?.[d] || new Array(list.length).fill(false);
-            list.forEach((_, i) => document.getElementById(`${prefix}-${i}`).checked = checks[i]);
-        }
-
-        document.getElementById('personSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        document.getElementById('dateSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        document.getElementById('personSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-        document.getElementById('dateSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-
-        loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
-
-        let chart = null;
-        function drawChart() {
-            const cat = document.getElementById('catSelect').value;
-            const tf = document.getElementById('timeSelect').value;
-            const data = getData(cat === 'zikr' ? 'zikrData' : 'extraData');
-            const cards = document.getElementById('cards');
-            cards.innerHTML = '';
-
-            const pcts = persons.map(p => {
-                const pData = data[p] || {};
-                let comp = 0, poss = 0, now = new Date();
-                Object.keys(pData).forEach(dStr => {
-                    const d = new Date(dStr);
-                    let inc = false;
-                    if (tf === 'daily' && dStr === today) inc = true;
-                    else if (tf === 'weekly' && Math.abs(now - d) / 86400000 <= 7) inc = true;
-                    else if (tf === 'monthly' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) inc = true;
-                    else if (tf === 'yearly' && d.getFullYear() === now.getFullYear()) inc = true;
-                    if (inc) pData[dStr].forEach(v => { if(v) comp++; poss++; });
-                });
-                const pct = poss > 0 ? Math.round((comp / poss) * 100) : 0;
-                cards.innerHTML += `<div class="theme-box p-3 rounded text-center"><p class="text-xs text-slate-300">${p}</p><p class="text-2xl font-bold theme-title">${pct}%</p></div>`;
-                return pct;
-            });
-
-            if (chart) chart.destroy();
-            chart = new Chart(document.getElementById('myChart').getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: persons,
-                    datasets: [{ label: 'Completion %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
-            });
-        }
-    </script>
+    // Init Page
+    updateZikrUI();
+    renderClash();
+    loadPrayers();
+  </script>
 </body>
 </html>
