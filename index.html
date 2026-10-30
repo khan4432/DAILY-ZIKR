@@ -3,337 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Zikr & Sawaab Portal - Luxury Edition</title>
-    <!-- Tailwind CSS -->
+    <title>Daily Zikr & Sawaab Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-grad: linear-gradient(rgba(5, 10, 25, 0.90), rgba(5, 10, 25, 0.94));
-            --primary: #00ffcc;
-            --primary-hover: #00cca3;
-            --box-bg: rgba(13, 20, 38, 0.9);
-            --shadow: rgba(0, 255, 204, 0.2);
-            --text-main: #ffffff;
-            --text-sub: #94a3b8;
+            --primary: #ff007f;
+            --box-bg: rgba(18, 10, 35, 0.92);
+            --shadow: rgba(255, 0, 127, 0.45);
         }
-
         body {
-            background: var(--bg-grad), url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: var(--text-main);
+            background: linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96));
+            background-size: cover; background-attachment: fixed; color: #ffffff;
         }
-
-        .theme-title {
-            color: var(--primary);
-            text-shadow: 0 0 12px var(--shadow);
-        }
-        .theme-box {
-            background: var(--box-bg);
-            border: 1px solid var(--primary);
-            box-shadow: 0 0 20px var(--shadow);
-        }
-        .theme-btn {
-            background: var(--primary);
-            color: #050a19;
-            font-weight: bold;
-            box-shadow: 0 0 15px var(--shadow);
-            transition: all 0.3s ease;
-        }
-        .theme-btn:hover {
-            background: var(--primary-hover);
-            box-shadow: 0 0 25px var(--shadow);
-        }
+        .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
+        .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); }
+        .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
+        .theme-btn:hover { background: #e60073; }
     </style>
 </head>
-<body class="min-h-screen font-sans">
-
-    <!-- Header -->
-    <header id="siteHeader" class="bg-slate-900/90 backdrop-blur border-b shadow-lg py-4 px-6 mb-6">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-            <h1 class="text-2xl font-bold theme-title flex items-center gap-2">
-                📿 Daily Zikr & Sawaab Portal
-            </h1>
-            
-            <div class="flex flex-wrap items-center gap-3">
-                <!-- Theme Selector Dropdown -->
-                <select id="themeSelector" onchange="changeTheme(this.value)" class="bg-slate-900 border text-sm rounded-lg p-2 text-white outline-none">
-                    <option value="emerald">💎 1. Emerald Cyan (Default)</option>
-                    <option value="gold">👑 2. Royal Gold & Obsidian</option>
-                    <option value="sapphire">🔷 3. Deep Sapphire Blue</option>
-                    <option value="ruby">❤️ 4. Ruby Crimson Luxury</option>
-                    <option value="amethyst">🔮 5. Royal Amethyst Purple</option>
-                    <option value="rosegold">✨ 6. Rose Gold Elegance</option>
-                    <option value="platinum">🪙 7. Platinum Silver Dark</option>
-                    <option value="emeraldgreen">🌿 8. Imperial Emerald Green</option>
-                    <option value="sunset">🌅 9. Sunset Copper Bronze</option>
-                    <option value="cyberpunk">⚡ 10. Cyber Neon Luxe</option>
-                </select>
-
-                <nav class="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-700">
-                    <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded-md font-medium text-sm transition theme-btn">Daily Zikr</button>
-                    <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Extra Sawaab</button>
-                    <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white">Analytics</button>
-                </nav>
+<body class="min-h-screen font-sans p-4">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <header class="theme-box p-4 rounded-xl flex justify-between items-center flex-wrap gap-4">
+            <h1 class="text-xl font-bold theme-title">📿 Zikr & Sawaab Portal</h1>
+            <div class="flex gap-2">
+                <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn">Daily Zikr</button>
+                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300">Extra Sawaab</button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300">Analytics</button>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <main class="max-w-6xl mx-auto px-4 pb-12">
-
-        <!-- TAB 1: DAILY TRACKER -->
-        <section id="tab-tracker" class="space-y-6">
-            <div class="theme-box rounded-xl p-6 shadow-2xl">
-                <h2 class="text-xl font-semibold mb-4 theme-title">Mark Daily Zikr Progress</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Person:</label>
-                        <select id="personSelect" class="w-full bg-slate-900 border rounded-lg p-2.5 text-white outline-none">
-                            <option value="Imran">Imran</option>
-                            <option value="Saima">Saima</option>
-                            <option value="Huzaifa">Huzaifa</option>
-                            <option value="Ali">Ali</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Date:</label>
-                        <input type="date" id="dateSelect" class="w-full bg-slate-900 border rounded-lg p-2.5 text-white outline-none">
-                    </div>
-                </div>
-
-                <div class="space-y-3 mb-6" id="zikrList"></div>
-
-                <button onclick="saveProgress('zikrData', zikrs, 'zikr')" class="w-full theme-btn py-3 rounded-lg transition shadow-lg">
-                    Save Daily Zikr Progress
-                </button>
+        <!-- TAB 1 -->
+        <section id="tab-tracker" class="theme-box p-6 rounded-xl space-y-4">
+            <h2 class="text-lg font-semibold theme-title">Mark Daily Zikr</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <select id="personSelect" class="bg-slate-900 border border-pink-500 rounded p-2 text-white"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
+                <input type="date" id="dateSelect" class="bg-slate-900 border border-pink-500 rounded p-2 text-white">
             </div>
+            <div id="zikrList" class="space-y-2"></div>
+            <button onclick="save('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect')" class="w-full theme-btn py-2.5 rounded">Save Zikr</button>
         </section>
 
-        <!-- TAB 2: EXTRA SAWAAB -->
-        <section id="tab-extrasawaab" class="hidden space-y-6">
-            <div class="theme-box rounded-xl p-6 shadow-2xl">
-                <h2 class="text-xl font-semibold mb-4 theme-title">Mark Extra Sawaab Progress</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Person:</label>
-                        <select id="personSelectExtra" class="w-full bg-slate-900 border rounded-lg p-2.5 text-white outline-none">
-                            <option value="Imran">Imran</option>
-                            <option value="Saima">Saima</option>
-                            <option value="Huzaifa">Huzaifa</option>
-                            <option value="Ali">Ali</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Date:</label>
-                        <input type="date" id="dateSelectExtra" class="w-full bg-slate-900 border rounded-lg p-2.5 text-white outline-none">
-                    </div>
-                </div>
-
-                <div class="space-y-3 mb-6" id="extraList"></div>
-
-                <button onclick="saveProgress('extraData', extras, 'extra')" class="w-full theme-btn py-3 rounded-lg transition shadow-lg">
-                    Save Extra Sawaab Progress
-                </button>
+        <!-- TAB 2 -->
+        <section id="tab-extrasawaab" class="theme-box p-6 rounded-xl space-y-4 hidden">
+            <h2 class="text-lg font-semibold theme-title">Mark Extra Sawaab</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <select id="personSelectExtra" class="bg-slate-900 border border-pink-500 rounded p-2 text-white"><option>Imran</option><option>Saima</option><option>Huzaifa</option><option>Ali</option></select>
+                <input type="date" id="dateSelectExtra" class="bg-slate-900 border border-pink-500 rounded p-2 text-white">
             </div>
+            <div id="extraList" class="space-y-2"></div>
+            <button onclick="save('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra')" class="w-full theme-btn py-2.5 rounded">Save Extra Sawaab</button>
         </section>
 
-        <!-- TAB 3: ANALYTICS -->
-        <section id="tab-analytics" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center theme-box p-4 rounded-xl gap-4 shadow-2xl">
-                <h2 class="text-xl font-semibold theme-title">Comparison Chart</h2>
+        <!-- TAB 3 -->
+        <section id="tab-analytics" class="theme-box p-6 rounded-xl space-y-4 hidden">
+            <div class="flex justify-between items-center flex-wrap gap-2">
+                <h2 class="text-lg font-semibold theme-title">Analytics</h2>
                 <div class="flex gap-2">
-                    <select id="categorySelect" onchange="updateCharts()" class="bg-slate-900 border rounded-lg p-2 text-white text-sm outline-none">
-                        <option value="zikr">Daily Zikr</option>
-                        <option value="extra">Extra Sawaab</option>
-                    </select>
-                    <select id="timeframeSelect" onchange="updateCharts()" class="bg-slate-900 border rounded-lg p-2 text-white text-sm outline-none">
-                        <option value="daily">Daily View</option>
-                        <option value="weekly">Weekly View</option>
-                        <option value="monthly">Monthly View</option>
-                        <option value="yearly">Yearly View</option>
-                    </select>
+                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border border-pink-500 rounded p-1.5 text-white"><option value="zikr">Zikr</option><option value="extra">Extra Sawaab</option></select>
+                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border border-pink-500 rounded p-1.5 text-white"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="yearly">Yearly</option></select>
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="summaryCards"></div>
-
-            <div class="theme-box rounded-xl p-6 shadow-2xl">
-                <div class="relative h-96 w-full">
-                    <canvas id="zikrChart"></canvas>
-                </div>
-            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="cards"></div>
+            <div class="relative h-72"><canvas id="myChart"></canvas></div>
         </section>
-
-    </main>
+    </div>
 
     <script>
-        // 10 Luxury Themes Configuration
-        const themes = {
-            emerald: { primary: "#00ffcc", hover: "#00cca3", bg: "linear-gradient(rgba(5, 10, 25, 0.90), rgba(5, 10, 25, 0.94))", box: "rgba(13, 20, 38, 0.9)", shadow: "rgba(0, 255, 204, 0.2)" },
-            gold: { primary: "#d4af37", hover: "#b3922f", bg: "linear-gradient(rgba(15, 15, 15, 0.92), rgba(25, 20, 10, 0.95))", box: "rgba(30, 25, 15, 0.9)", shadow: "rgba(212, 175, 55, 0.25)" },
-            sapphire: { primary: "#3b82f6", hover: "#2563eb", bg: "linear-gradient(rgba(10, 15, 35, 0.90), rgba(5, 10, 25, 0.94))", box: "rgba(15, 23, 42, 0.9)", shadow: "rgba(59, 130, 246, 0.3)" },
-            ruby: { primary: "#ef4444", hover: "#dc2626", bg: "linear-gradient(rgba(30, 10, 10, 0.90), rgba(15, 5, 5, 0.94))", box: "rgba(35, 15, 15, 0.9)", shadow: "rgba(239, 68, 68, 0.3)" },
-            amethyst: { primary: "#a855f7", hover: "#9333ea", bg: "linear-gradient(rgba(20, 10, 30, 0.90), rgba(10, 5, 20, 0.94))", box: "rgba(25, 15, 35, 0.9)", shadow: "rgba(168, 85, 247, 0.3)" },
-            rosegold: { primary: "#fb7185", hover: "#f43f5e", bg: "linear-gradient(rgba(30, 15, 20, 0.90), rgba(15, 8, 10, 0.94))", box: "rgba(35, 18, 24, 0.9)", shadow: "rgba(251, 113, 133, 0.3)" },
-            platinum: { primary: "#e2e8f0", hover: "#cbd5e1", bg: "linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.94))", box: "rgba(30, 41, 59, 0.9)", shadow: "rgba(226, 232, 240, 0.2)" },
-            emeraldgreen: { primary: "#10b981", hover: "#059669", bg: "linear-gradient(rgba(5, 25, 15, 0.90), rgba(2, 15, 8, 0.94))", box: "rgba(10, 30, 20, 0.9)", shadow: "rgba(16, 185, 129, 0.3)" },
-            sunset: { primary: "#f97316", hover: "#ea580c", bg: "linear-gradient(rgba(30, 15, 5, 0.90), rgba(15, 8, 2, 0.94))", box: "rgba(35, 18, 10, 0.9)", shadow: "rgba(249, 115, 22, 0.3)" },
-            cyberpunk: { primary: "#f43f5e", hover: "#e11d48", bg: "linear-gradient(rgba(10, 5, 30, 0.90), rgba(5, 2, 15, 0.94))", box: "rgba(20, 10, 40, 0.9)", shadow: "rgba(244, 63, 94, 0.4)" }
-        };
-
-        function changeTheme(themeName) {
-            const t = themes[themeName] || themes.emerald;
-            const root = document.documentElement;
-            root.style.setProperty('--primary', t.primary);
-            root.style.setProperty('--primary-hover', t.hover);
-            root.style.setProperty('--bg-grad', t.bg);
-            root.style.setProperty('--box-bg', t.box);
-            root.style.setProperty('--shadow', t.shadow);
-            localStorage.setItem('selectedTheme', themeName);
-        }
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('selectedTheme') || 'emerald';
-        document.getElementById('themeSelector').value = savedTheme;
-        changeTheme(savedTheme);
-
         const persons = ["Imran", "Saima", "Huzaifa", "Ali"];
-        const zikrs = [
-            "1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", 
-            "4. Subhanallahi wa bihamdihi, subhanallahil azeem (100x)", 
-            "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"
-        ];
+        const zikrs = ["1. 1st Kalma", "2. 4th Kalma", "3. Tasbee", "4. Subhanallahi wa bihamdihi (100x)", "5. Aytal Qursi", "6. Last 2 Aayat", "7. Astagfirullah (100x)"];
         const extras = ["1. Quran Reading", "2. Tahajjud namaaz", "3. Witr namaaz", "4. Nafil namaaz", "5. Sunnat namaaz"];
 
-        const todayStr = new Date().toISOString().split('T')[0];
-        document.getElementById('dateSelect').value = todayStr;
-        document.getElementById('dateSelectExtra').value = todayStr;
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dateSelect').value = today;
+        document.getElementById('dateSelectExtra').value = today;
 
-        function renderCheckboxes(list, containerId, prefix) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            list.forEach((item, index) => {
-                container.innerHTML += `
-                    <label class="flex items-center gap-3 p-3 bg-slate-900/80 border border-slate-700 rounded-lg hover:border-[var(--primary)] cursor-pointer transition">
-                        <input type="checkbox" id="${prefix}-${index}" class="w-5 h-5 accent-[var(--primary)] rounded bg-slate-800 border-slate-600">
-                        <span class="text-slate-200 font-medium">${item}</span>
-                    </label>
-                `;
+        function render(list, id, prefix) {
+            const el = document.getElementById(id);
+            el.innerHTML = '';
+            list.forEach((item, i) => {
+                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-pink-500"><span class="text-sm">${item}</span></label>`;
             });
         }
-        renderCheckboxes(zikrs, 'zikrList', 'zikr');
-        renderCheckboxes(extras, 'extraList', 'extra');
+        render(zikrs, 'zikrList', 'zikr');
+        render(extras, 'extraList', 'extra');
 
         function switchTab(tab) {
             ['tracker', 'extrasawaab', 'analytics'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-${t}`).className = "px-3 py-2 rounded-md font-medium text-sm transition text-slate-300 hover:text-white";
+                document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
+                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium ${t === tab ? 'theme-btn' : 'bg-slate-800 text-slate-300'}`;
             });
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`btn-${tab}`).className = "px-3 py-2 rounded-md font-medium text-sm transition theme-btn";
-            if(tab === 'analytics') updateCharts();
+            if(tab === 'analytics') drawChart();
         }
 
-        function getData(storageKey) { return JSON.parse(localStorage.getItem(storageKey) || '{}'); }
+        function getData(key) { return JSON.parse(localStorage.getItem(key) || '{}'); }
 
-        function saveProgress(storageKey, listArr, prefix) {
-            const person = document.getElementById(prefix === 'zikr' ? 'personSelect' : 'personSelectExtra').value;
-            const date = document.getElementById(prefix === 'zikr' ? 'dateSelect' : 'dateSelectExtra').value;
-            const data = getData(storageKey);
-            if(!data[person]) data[person] = {};
-            
-            const checks = [];
-            listArr.forEach((_, index) => { checks.push(document.getElementById(`${prefix}-${index}`).checked); });
-            data[person][date] = checks;
-            localStorage.setItem(storageKey, JSON.stringify(data));
-            alert('Progress saved successfully!');
+        function save(key, list, prefix, pId, dId) {
+            const p = document.getElementById(pId).value;
+            const d = document.getElementById(dId).value;
+            const data = getData(key);
+            if(!data[p]) data[p] = {};
+            data[p][d] = list.map((_, i) => document.getElementById(`${prefix}-${i}`).checked);
+            localStorage.setItem(key, JSON.stringify(data));
+            alert('Saved successfully!');
         }
 
-        function loadFormState(storageKey, listArr, prefix, personId, dateId) {
-            const person = document.getElementById(personId).value;
-            const date = document.getElementById(dateId).value;
-            const data = getData(storageKey);
-            const checks = data[person]?.[date] || new Array(listArr.length).fill(false);
-            listArr.forEach((_, index) => { document.getElementById(`${prefix}-${index}`).checked = checks[index] || false; });
+        function loadState(key, list, prefix, pId, dId) {
+            const p = document.getElementById(pId).value;
+            const d = document.getElementById(dId).value;
+            const checks = getData(key)[p]?.[d] || new Array(list.length).fill(false);
+            list.forEach((_, i) => document.getElementById(`${prefix}-${i}`).checked = checks[i]);
         }
 
-        document.getElementById('personSelect').addEventListener('change', () => loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect'));
-        document.getElementById('dateSelect').addEventListener('change', () => loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect'));
-        document.getElementById('personSelectExtra').addEventListener('change', () => loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra'));
-        document.getElementById('dateSelectExtra').addEventListener('change', () => loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra'));
+        document.getElementById('personSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
+        document.getElementById('dateSelect').onchange = () => loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
+        document.getElementById('personSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
+        document.getElementById('dateSelectExtra').onchange = () => loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
 
-        loadFormState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
-        loadFormState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
+        loadState('zikrData', zikrs, 'zikr', 'personSelect', 'dateSelect');
+        loadState('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra');
 
-        let zikrChart = null;
+        let chart = null;
+        function drawChart() {
+            const cat = document.getElementById('catSelect').value;
+            const tf = document.getElementById('timeSelect').value;
+            const data = getData(cat === 'zikr' ? 'zikrData' : 'extraData');
+            const cards = document.getElementById('cards');
+            cards.innerHTML = '';
 
-        function updateCharts() {
-            const category = document.getElementById('categorySelect').value;
-            const timeframe = document.getElementById('timeframeSelect').value;
-            const storageKey = category === 'zikr' ? 'zikrData' : 'extraData';
-            const data = getData(storageKey);
-            const summaryCardsEl = document.getElementById('summaryCards');
-            summaryCardsEl.innerHTML = '';
-
-            const percentages = persons.map(person => {
-                const pData = data[person] || {};
-                let totalCompleted = 0, totalPossible = 0;
-                const now = new Date();
-                
-                Object.keys(pData).forEach(dateStr => {
-                    const d = new Date(dateStr);
-                    let include = false;
-                    if (timeframe === 'daily') { if (dateStr === now.toISOString().split('T')[0]) include = true; }
-                    else if (timeframe === 'weekly') { if (Math.ceil(Math.abs(now - d) / (1000 * 60 * 60 * 24)) <= 7) include = true; }
-                    else if (timeframe === 'monthly') { if (d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) include = true; }
-                    else if (timeframe === 'yearly') { if (d.getFullYear() === now.getFullYear()) include = true; }
-
-                    if (include) {
-                        pData[dateStr].forEach(val => { if (val) totalCompleted++; totalPossible++; });
-                    }
+            const pcts = persons.map(p => {
+                const pData = data[p] || {};
+                let comp = 0, poss = 0, now = new Date();
+                Object.keys(pData).forEach(dStr => {
+                    const d = new Date(dStr);
+                    let inc = false;
+                    if (tf === 'daily' && dStr === today) inc = true;
+                    else if (tf === 'weekly' && Math.abs(now - d) / 86400000 <= 7) inc = true;
+                    else if (tf === 'monthly' && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear()) inc = true;
+                    else if (tf === 'yearly' && d.getFullYear() === now.getFullYear()) inc = true;
+                    if (inc) pData[dStr].forEach(v => { if(v) comp++; poss++; });
                 });
-
-                const pct = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
-                summaryCardsEl.innerHTML += `
-                    <div class="theme-box p-4 rounded-xl shadow-xl">
-                        <h3 class="text-slate-300 text-sm font-medium">${person}</h3>
-                        <p class="text-3xl font-bold theme-title mt-2">${pct}%</p>
-                        <p class="text-xs text-slate-400 mt-1">${timeframe.toUpperCase()} Completion</p>
-                    </div>
-                `;
+                const pct = poss > 0 ? Math.round((comp / poss) * 100) : 0;
+                cards.innerHTML += `<div class="theme-box p-3 rounded text-center"><p class="text-xs text-slate-300">${p}</p><p class="text-2xl font-bold theme-title">${pct}%</p></div>`;
                 return pct;
             });
 
-            const ctx = document.getElementById('zikrChart').getContext('2d');
-            if (zikrChart) zikrChart.destroy();
-
-            zikrChart = new Chart(ctx, {
+            if (chart) chart.destroy();
+            chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: persons,
-                    datasets: [{
-                        label: `${category.toUpperCase()} - ${timeframe.toUpperCase()} Completion (%)`,
-                        data: percentages,
-                        backgroundColor: ['rgba(0, 255, 204, 0.85)', 'rgba(0, 150, 255, 0.85)', 'rgba(180, 0, 255, 0.85)', 'rgba(255, 0, 128, 0.85)'],
-                        borderColor: ['#00ffcc', '#0096ff', '#b400ff', '#ff0080'],
-                        borderWidth: 2,
-                        borderRadius: 8
-                    }]
+                    datasets: [{ label: 'Completion %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#ffffff' } },
-                        x: { grid: { display: false }, ticks: { color: '#ffffff', font: { weight: 'bold', size: 14 } } }
-                    },
-                    plugins: { legend: { labels: { color: '#ffffff' } } }
-                }
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
             });
         }
     </script>
