@@ -39,21 +39,21 @@
             <div class="flex items-center gap-2 flex-wrap">
                 <!-- Theme Picker Button -->
                 <button onclick="toggleThemeModal()" id="themeBtn" class="bg-slate-900 border text-xs rounded px-3 py-2 text-white outline-none flex items-center gap-2 border-[var(--primary)] shadow font-semibold">
-                    🎨 <span id="currentThemeName">𝓢𝓮𝓵𝓮𝓬𝓽 𝓣𝓱𝓮𝓶𝓮 (75)</span> ▼
+                    🎨 <span id="currentThemeName">𝓢𝓮𝓵𝓮𝓬𝓽 𝓣𝓱𝓮𝓶𝓮 (5000)</span> ▼
                 </button>
 
                 <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn text-xs">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</button>
                 <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</button>
-                <button onclick="switchTab('namaaz')" id="btn-namaaz" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝓃</button>
+                <button onclick="switchTab('namaaz')" id="btn-namaaz" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</button>
                 <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓐𝓷𝓪𝓵𝔂𝓽𝓲𝓬𝓼</button>
             </div>
         </header>
 
-        <!-- THEME SELECTION MODAL POPUP (75 Themes) -->
+        <!-- THEME SELECTION MODAL POPUP (5000 Themes) -->
         <div id="themeModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="theme-box p-6 rounded-2xl max-w-lg w-full max-h-[85vh] flex flex-col space-y-4 shadow-2xl">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                    <h2 class="text-lg font-bold theme-title">𝓢𝓮𝓵𝓮𝓬𝓽 𝓯𝓻𝓸𝓶 75 𝓛𝓾𝔁𝓾𝓻𝔂 𝓣𝓱𝓮𝓶𝓮𝓼</h2>
+                    <h2 class="text-lg font-bold theme-title">𝓢𝓮𝓵𝓮𝓬𝓽 𝓯𝓻𝓸𝓶 5000 𝓛𝓾𝔁𝓾𝓻𝔂 𝓣𝓱𝓮𝓶𝓮𝓼</h2>
                     <button onclick="toggleThemeModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
                 </div>
                 <div id="themeListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 overflow-y-auto pr-2 max-h-[60vh]"></div>
@@ -101,7 +101,7 @@
                     <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
                         <option value="zikr">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</option>
                         <option value="extra">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</option>
-                        <option value="namaaz">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝓫</option>
+                        <option value="namaaz">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔫</option>
                     </select>
                     <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
                         <option value="daily">𝓓𝓪𝓲𝓵𝔂</option>
@@ -117,84 +117,21 @@
     </div>
 
     <script>
-        const themes = {
-            cyberpunkneon: { name: "⚡ 1. Cyberpunk Neon Glow", primary: "#ff007f", hover: "#e60073", box: "rgba(18, 10, 35, 0.92)", shadow: "rgba(255, 0, 127, 0.45)", bg: "linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96))" },
-            emerald: { name: "💎 2. Emerald Cyan", primary: "#00ffcc", hover: "#00cca3", box: "rgba(13, 20, 38, 0.9)", shadow: "rgba(0, 255, 204, 0.2)", bg: "linear-gradient(rgba(5, 10, 25, 0.90), rgba(5, 10, 25, 0.94))" },
-            gold: { name: "👑 3. Royal Gold", primary: "#d4af37", hover: "#b3922f", box: "rgba(30, 25, 15, 0.9)", shadow: "rgba(212, 175, 55, 0.25)", bg: "linear-gradient(rgba(15, 15, 15, 0.92), rgba(25, 20, 10, 0.95))" },
-            sapphire: { name: "🔷 4. Sapphire Blue", primary: "#3b82f6", hover: "#2563eb", box: "rgba(15, 23, 42, 0.9)", shadow: "rgba(59, 130, 246, 0.3)", bg: "linear-gradient(rgba(10, 15, 35, 0.90), rgba(5, 10, 25, 0.94))" },
-            ruby: { name: "❤️ 5. Ruby Crimson", primary: "#ef4444", hover: "#dc2626", box: "rgba(35, 15, 15, 0.9)", shadow: "rgba(239, 68, 68, 0.3)", bg: "linear-gradient(rgba(30, 10, 10, 0.90), rgba(15, 5, 5, 0.94))" },
-            amethyst: { name: "🔮 6. Royal Amethyst", primary: "#a855f7", hover: "#9333ea", box: "rgba(25, 15, 35, 0.9)", shadow: "rgba(168, 85, 247, 0.3)", bg: "linear-gradient(rgba(20, 10, 30, 0.90), rgba(10, 5, 20, 0.94))" },
-            rosegold: { name: "✨ 7. Rose Gold", primary: "#fb7185", hover: "#f43f5e", box: "rgba(35, 18, 24, 0.9)", shadow: "rgba(251, 113, 133, 0.3)", bg: "linear-gradient(rgba(30, 15, 20, 0.90), rgba(15, 8, 10, 0.94))" },
-            platinum: { name: "🪙 8. Platinum Silver", primary: "#e2e8f0", hover: "#cbd5e1", box: "rgba(30, 41, 59, 0.9)", shadow: "rgba(226, 232, 240, 0.2)", bg: "linear-gradient(rgba(15, 23, 42, 0.90), rgba(15, 23, 42, 0.94))" },
-            emeraldgreen: { name: "🌿 9. Imperial Emerald", primary: "#10b981", hover: "#059669", box: "rgba(10, 30, 20, 0.9)", shadow: "rgba(16, 185, 129, 0.3)", bg: "linear-gradient(rgba(5, 25, 15, 0.90), rgba(2, 15, 8, 0.94))" },
-            sunset: { name: "🌅 10. Sunset Copper", primary: "#f97316", hover: "#ea580c", box: "rgba(35, 18, 10, 0.9)", shadow: "rgba(249, 115, 22, 0.3)", bg: "linear-gradient(rgba(30, 15, 5, 0.90), rgba(15, 8, 2, 0.94))" },
-            cyber: { name: "⚡ 11. Cyber Neon Luxe", primary: "#f43f5e", hover: "#e11d48", box: "rgba(20, 10, 40, 0.9)", shadow: "rgba(244, 63, 94, 0.4)", bg: "linear-gradient(rgba(10, 5, 30, 0.90), rgba(5, 2, 15, 0.94))" },
-            neonblue: { name: "🔹 12. Electric Neon Blue", primary: "#00d2ff", hover: "#0099cc", box: "rgba(5, 20, 35, 0.92)", shadow: "rgba(0, 210, 255, 0.4)", bg: "linear-gradient(rgba(2, 10, 25, 0.92), rgba(1, 5, 15, 0.96))" },
-            neongreen: { name: "🟢 13. Toxic Neon Green", primary: "#00ff66", hover: "#00cc52", box: "rgba(5, 30, 15, 0.92)", shadow: "rgba(0, 255, 102, 0.4)", bg: "linear-gradient(rgba(2, 15, 8, 0.92), rgba(1, 8, 3, 0.96))" },
-            neonyellow: { name: "🟡 14. Laser Neon Yellow", primary: "#ccff00", hover: "#a3cc00", box: "rgba(25, 30, 5, 0.92)", shadow: "rgba(204, 255, 0, 0.4)", bg: "linear-gradient(rgba(12, 15, 2, 0.92), rgba(6, 8, 1, 0.96))" },
-            neonpurple: { name: "🟣 15. Ultraviolet Neon", primary: "#9d00ff", hover: "#7e00cc", box: "rgba(20, 5, 35, 0.92)", shadow: "rgba(157, 0, 255, 0.4)", bg: "linear-gradient(rgba(10, 2, 18, 0.92), rgba(5, 1, 9, 0.96))" },
-            neonorange: { name: "🟠 16. Blazing Neon Orange", primary: "#ff5500", hover: "#cc4400", box: "rgba(35, 15, 5, 0.92)", shadow: "rgba(255, 85, 0, 0.4)", bg: "linear-gradient(rgba(18, 7, 2, 0.92), rgba(9, 3, 1, 0.96))" },
-            midnight: { name: "🌙 17. Midnight Dark", primary: "#64748b", hover: "#475569", box: "rgba(15, 23, 42, 0.92)", shadow: "rgba(100, 116, 139, 0.3)", bg: "linear-gradient(rgba(2, 6, 23, 0.92), rgba(1, 3, 12, 0.96))" },
-            galaxy: { name: "🌌 18. Deep Galaxy Purple", primary: "#c084fc", hover: "#a855f7", box: "rgba(24, 10, 45, 0.92)", shadow: "rgba(192, 132, 252, 0.4)", bg: "linear-gradient(rgba(12, 5, 25, 0.92), rgba(6, 2, 12, 0.96))" },
-            crimson: { name: "🩸 19. Dark Crimson Night", primary: "#991b1b", hover: "#7f1d1d", box: "rgba(40, 10, 10, 0.92)", shadow: "rgba(153, 27, 27, 0.4)", bg: "linear-gradient(rgba(20, 5, 5, 0.92), rgba(10, 2, 2, 0.96))" },
-            ocean: { name: "🌊 20. Deep Ocean Teal", primary: "#0d9488", hover: "#0f766e", box: "rgba(10, 30, 30, 0.92)", shadow: "rgba(13, 148, 136, 0.4)", bg: "linear-gradient(rgba(5, 15, 15, 0.92), rgba(2, 8, 8, 0.96))" },
-            forest: { name: "🌲 21. Dark Forest Pine", primary: "#15803d", hover: "#166534", box: "rgba(10, 35, 20, 0.92)", shadow: "rgba(21, 128, 61, 0.4)", bg: "linear-gradient(rgba(5, 18, 10, 0.92), rgba(2, 9, 5, 0.96))" },
-            coffee: { name: "☕ 22. Espresso Coffee", primary: "#b45309", hover: "#92400e", box: "rgba(35, 20, 10, 0.92)", shadow: "rgba(180, 83, 9, 0.4)", bg: "linear-gradient(rgba(18, 10, 5, 0.92), rgba(9, 5, 2, 0.96))" },
-            lavender: { name: "🪻 23. Soft Lavender Dark", primary: "#d8b4fe", hover: "#c084fc", box: "rgba(30, 20, 40, 0.92)", shadow: "rgba(216, 180, 254, 0.3)", bg: "linear-gradient(rgba(15, 10, 20, 0.92), rgba(8, 5, 10, 0.96))" },
-            peach: { name: "🍑 24. Sunset Peach", primary: "#ffedd5", hover: "#fed7aa", box: "rgba(40, 25, 20, 0.92)", shadow: "rgba(255, 237, 213, 0.3)", bg: "linear-gradient(rgba(20, 12, 10, 0.92), rgba(10, 6, 5, 0.96))" },
-            monochrome: { name: "♟️ 25. Sleek Monochrome", primary: "#ffffff", hover: "#cbd5e1", box: "rgba(24, 24, 27, 0.92)", shadow: "rgba(255, 255, 255, 0.25)", bg: "linear-gradient(rgba(9, 9, 11, 0.92), rgba(3, 3, 4, 0.96))" },
-            // 50 Extra Themes Added Below
-            theme26: { name: "🌟 26. Neon Lime", primary: "#84cc16", hover: "#65a30d", box: "rgba(20, 30, 10, 0.92)", shadow: "rgba(132, 204, 22, 0.4)", bg: "linear-gradient(rgba(10, 15, 5, 0.92), rgba(5, 8, 2, 0.96))" },
-            theme27: { name: "🔥 27. Inferno Red", primary: "#dc2626", hover: "#b91c1c", box: "rgba(35, 10, 10, 0.92)", shadow: "rgba(220, 38, 38, 0.4)", bg: "linear-gradient(rgba(18, 5, 5, 0.92), rgba(9, 2, 2, 0.96))" },
-            theme28: { name: "⚡ 28. Electric Cyan", primary: "#06b6d4", hover: "#0891b2", box: "rgba(10, 25, 30, 0.92)", shadow: "rgba(6, 182, 212, 0.4)", bg: "linear-gradient(rgba(5, 12, 15, 0.92), rgba(2, 6, 8, 0.96))" },
-            theme29: { name: "👑 29. Imperial Gold", primary: "#f59e0b", hover: "#d97706", box: "rgba(35, 25, 10, 0.92)", shadow: "rgba(245, 158, 11, 0.4)", bg: "linear-gradient(rgba(18, 12, 5, 0.92), rgba(9, 6, 2, 0.96))" },
-            theme30: { name: "🦄 30. Unicorn Pink", primary: "#ec4899", hover: "#db2777", box: "rgba(35, 10, 25, 0.92)", shadow: "rgba(236, 72, 153, 0.4)", bg: "linear-gradient(rgba(18, 5, 12, 0.92), rgba(9, 2, 6, 0.96))" },
-            theme31: { name: "🍃 31. Mint Fresh", primary: "#34d399", hover: "#10b981", box: "rgba(10, 35, 25, 0.92)", shadow: "rgba(52, 211, 153, 0.4)", bg: "linear-gradient(rgba(5, 18, 12, 0.92), rgba(2, 9, 6, 0.96))" },
-            theme32: { name: "🍊 32. Tangerine Dream", primary: "#fb923c", hover: "#f97316", box: "rgba(35, 20, 10, 0.92)", shadow: "rgba(251, 146, 60, 0.4)", bg: "linear-gradient(rgba(18, 10, 5, 0.92), rgba(9, 5, 2, 0.96))" },
-            theme33: { name: "🍇 33. Grape Fizz", primary: "#c084fc", hover: "#a855f7", box: "rgba(25, 10, 35, 0.92)", shadow: "rgba(192, 132, 252, 0.4)", bg: "linear-gradient(rgba(12, 5, 18, 0.92), rgba(6, 2, 9, 0.96))" },
-            theme34: { name: "🌊 34. Deep Lagoon", primary: "#0ea5e9", hover: "#0284c7", box: "rgba(10, 20, 35, 0.92)", shadow: "rgba(14, 165, 233, 0.4)", bg: "linear-gradient(rgba(5, 10, 18, 0.92), rgba(2, 5, 9, 0.96))" },
-            theme35: { name: "🛡️ 35. Steel Blue", primary: "#60a5fa", hover: "#3b82f6", box: "rgba(15, 20, 35, 0.92)", shadow: "rgba(96, 165, 250, 0.4)", bg: "linear-gradient(rgba(8, 10, 18, 0.92), rgba(4, 5, 9, 0.96))" },
-            theme36: { name: "🍫 36. Dark Chocolate", primary: "#78350f", hover: "#451a03", box: "rgba(30, 15, 10, 0.92)", shadow: "rgba(120, 53, 15, 0.4)", bg: "linear-gradient(rgba(15, 8, 5, 0.92), rgba(7, 4, 2, 0.96))" },
-            theme37: { name: "🔮 37. Mystic Violet", primary: "#8b5cf6", hover: "#7c3aed", box: "rgba(20, 10, 35, 0.92)", shadow: "rgba(139, 92, 246, 0.4)", bg: "linear-gradient(rgba(10, 5, 18, 0.92), rgba(5, 2, 9, 0.96))" },
-            theme38: { name: "🌺 38. Hibiscus Red", primary: "#f43f5e", hover: "#e11d48", box: "rgba(35, 10, 15, 0.92)", shadow: "rgba(244, 63, 94, 0.4)", bg: "linear-gradient(rgba(18, 5, 8, 0.92), rgba(9, 2, 4, 0.96))" },
-            theme39: { name: "🌵 39. Cactus Green", primary: "#4ade80", hover: "#22c55e", box: "rgba(10, 30, 15, 0.92)", shadow: "rgba(74, 222, 128, 0.4)", bg: "linear-gradient(rgba(5, 15, 8, 0.92), rgba(2, 8, 4, 0.96))" },
-            theme40: { name: "🍋 40. Lemon Zest", primary: "#facc15", hover: "#eab308", box: "rgba(30, 30, 10, 0.92)", shadow: "rgba(250, 204, 21, 0.4)", bg: "linear-gradient(rgba(15, 15, 5, 0.92), rgba(8, 8, 2, 0.96))" },
-            theme41: { name: "🧵 41. Denim Blue", primary: "#2563eb", hover: "#1d4ed8", box: "rgba(10, 15, 30, 0.92)", shadow: "rgba(37, 99, 235, 0.4)", bg: "linear-gradient(rgba(5, 8, 15, 0.92), rgba(2, 4, 8, 0.96))" },
-            theme42: { name: "🍒 42. Cherry Blossom", primary: "#fb7185", hover: "#f43f5e", box: "rgba(35, 15, 20, 0.92)", shadow: "rgba(251, 113, 133, 0.4)", bg: "linear-gradient(rgba(18, 8, 10, 0.92), rgba(9, 4, 5, 0.96))" },
-            theme43: { name: "🪐 43. Cosmic Latate", primary: "#d97706", hover: "#b45309", box: "rgba(35, 20, 10, 0.92)", shadow: "rgba(217, 119, 6, 0.4)", bg: "linear-gradient(rgba(18, 10, 5, 0.92), rgba(9, 5, 2, 0.96))" },
-            theme44: { name: "🧿 44. Turkish Blue", primary: "#0284c7", hover: "#0369a1", box: "rgba(10, 20, 30, 0.92)", shadow: "rgba(2, 132, 199, 0.4)", bg: "linear-gradient(rgba(5, 10, 15, 0.92), rgba(2, 5, 8, 0.96))" },
-            theme45: { name: "🦖 45. Jurassic Park", primary: "#65a30d", hover: "#4d7c0f", box: "rgba(20, 30, 10, 0.92)", shadow: "rgba(101, 163, 13, 0.4)", bg: "linear-gradient(rgba(10, 15, 5, 0.92), rgba(5, 8, 2, 0.96))" },
-            theme46: { name: "🦄 46. Neon Magenta", primary: "#d946ef", hover: "#c026d3", box: "rgba(35, 10, 35, 0.92)", shadow: "rgba(217, 70, 239, 0.4)", bg: "linear-gradient(rgba(18, 5, 18, 0.92), rgba(9, 2, 9, 0.96))" },
-            theme47: { name: "⚡ 47. Laser Aqua", primary: "#22d3ee", hover: "#06b6d4", box: "rgba(10, 30, 35, 0.92)", shadow: "rgba(34, 211, 238, 0.4)", bg: "linear-gradient(rgba(5, 15, 18, 0.92), rgba(2, 8, 9, 0.96))" },
-            theme48: { name: "🔥 48. Solar Flare", primary: "#ea580c", hover: "#c2410c", box: "rgba(35, 15, 5, 0.92)", shadow: "rgba(234, 88, 12, 0.4)", bg: "linear-gradient(rgba(18, 8, 2, 0.92), rgba(9, 4, 1, 0.96))" },
-            theme49: { name: "💎 49. Diamond Ice", primary: "#93c5fd", hover: "#60a5fa", box: "rgba(15, 25, 40, 0.92)", shadow: "rgba(147, 197, 253, 0.4)", bg: "linear-gradient(rgba(8, 12, 20, 0.92), rgba(4, 6, 10, 0.96))" },
-            theme50: { name: "🌲 50. Pine Needle", primary: "#047857", hover: "#065f46", box: "rgba(10, 30, 20, 0.92)", shadow: "rgba(4, 120, 87, 0.4)", bg: "linear-gradient(rgba(5, 15, 10, 0.92), rgba(2, 8, 5, 0.96))" },
-            theme51: { name: "🎇 51. Neon Amber", primary: "#fbbf24", hover: "#f59e0b", box: "rgba(35, 30, 10, 0.92)", shadow: "rgba(251, 191, 36, 0.4)", bg: "linear-gradient(rgba(18, 15, 5, 0.92), rgba(9, 8, 2, 0.96))" },
-            theme52: { name: "🦋 52. Butterfly Blue", primary: "#818cf8", hover: "#6366f1", box: "rgba(15, 15, 35, 0.92)", shadow: "rgba(129, 140, 248, 0.4)", bg: "linear-gradient(rgba(8, 8, 18, 0.92), rgba(4, 4, 9, 0.96))" },
-            theme53: { name: "🍬 53. Cotton Candy", primary: "##f472b6", hover: "#ec4899", box: "rgba(35, 15, 30, 0.92)", shadow: "rgba(244, 114, 182, 0.4)", bg: "linear-gradient(rgba(18, 8, 15, 0.92), rgba(9, 4, 8, 0.96))" },
-            theme54: { name: "🥑 54. Avocado Glow", primary: "#acc310", hover: "#84cc16", box: "rgba(25, 30, 10, 0.92)", shadow: "rgba(172, 195, 16, 0.4)", bg: "linear-gradient(rgba(12, 15, 5, 0.92), rgba(6, 8, 2, 0.96))" },
-            theme55: { name: "🍷 55. Velvet Wine", primary: "#9f1239", hover: "#881337", box: "rgba(40, 10, 20, 0.92)", shadow: "rgba(159, 18, 57, 0.4)", bg: "linear-gradient(rgba(20, 5, 10, 0.92), rgba(10, 2, 5, 0.96))" },
-            theme56: { name: "🧊 56. Arctic Frost", primary: "#67e8f9", hover: "#22d3ee", box: "rgba(10, 30, 35, 0.92)", shadow: "rgba(103, 232, 249, 0.4)", bg: "linear-gradient(rgba(5, 15, 18, 0.92), rgba(2, 8, 9, 0.96))" },
-            theme57: { name: "🍯 57. Honey Gold", primary: "#d97706", hover: "#b45309", box: "rgba(35, 25, 10, 0.92)", shadow: "rgba(217, 119, 6, 0.4)", bg: "linear-gradient(rgba(18, 12, 5, 0.92), rgba(9, 6, 2, 0.96))" },
-            theme58: { name: "🦚 58. Peacock Feather", primary: "#0d9488", hover: "#0f766e", box: "rgba(10, 30, 30, 0.92)", shadow: "rgba(13, 148, 136, 0.4)", bg: "linear-gradient(rgba(5, 15, 15, 0.92), rgba(2, 8, 8, 0.96))" },
-            theme59: { name: "🦄 59. Fuchsia Flash", primary: "#e879f9", hover: "#d946ef", box: "rgba(35, 10, 35, 0.92)", shadow: "rgba(232, 121, 249, 0.4)", bg: "linear-gradient(rgba(18, 5, 18, 0.92), rgba(9, 2, 9, 0.96))" },
-            theme60: { name: "🦕 60. Dino Teal", primary: "#14b8a6", hover: "#0d9488", box: "rgba(10, 30, 30, 0.92)", shadow: "rgba(20, 184, 166, 0.4)", bg: "linear-gradient(rgba(5, 15, 15, 0.92), rgba(2, 8, 8, 0.96))" },
-            theme61: { name: "🌙 61. Moonstone", primary: "#cbd5e1", hover: "#94a3b8", box: "rgba(25, 30, 35, 0.92)", shadow: "rgba(203, 213, 225, 0.4)", bg: "linear-gradient(rgba(12, 15, 18, 0.92), rgba(6, 8, 9, 0.96))" },
-            theme62: { name: "🍂 62. Autumn Rust", primary: "#c2410c", hover: "#9a3412", box: "rgba(35, 15, 10, 0.92)", shadow: "rgba(194, 65, 12, 0.4)", bg: "linear-gradient(rgba(18, 8, 5, 0.92), rgba(9, 4, 2, 0.96))" },
-            theme63: { name: "🔋 63. Matrix Green", primary: "#4ade80", hover: "#22c55e", box: "rgba(5, 30, 15, 0.92)", shadow: "rgba(74, 222, 128, 0.4)", bg: "linear-gradient(rgba(2, 15, 8, 0.92), rgba(1, 8, 4, 0.96))" },
-            theme64: { name: "🔮 64. Plum Magic", primary: "#7e22ce", hover: "#6b21a8", box: "rgba(25, 10, 35, 0.92)", shadow: "rgba(126, 34, 206, 0.4)", bg: "linear-gradient(rgba(12, 5, 18, 0.92), rgba(6, 2, 9, 0.96))" },
-            theme65: { name: "⚡ 65. Neon Tangerine", primary: "#ff781f", hover: "#e05e0b", box: "rgba(35, 20, 10, 0.92)", shadow: "rgba(255, 120, 31, 0.4)", bg: "linear-gradient(rgba(18, 10, 5, 0.92), rgba(9, 5, 2, 0.96))" },
-            theme66: { name: "🌊 66. Aqua Marine", primary: "#38bdf8", hover: "#0ea5e9", box: "rgba(10, 25, 35, 0.92)", shadow: "rgba(56, 189, 248, 0.4)", bg: "linear-gradient(rgba(5, 12, 18, 0.92), rgba(2, 6, 9, 0.96))" },
-            theme67: { name: "🌸 67. Orchid Glow", primary: "#d946ef", hover: "#c026d3", box: "rgba(35, 10, 35, 0.92)", shadow: "rgba(217, 70, 239, 0.4)", bg: "linear-gradient(rgba(18, 5, 18, 0.92), rgba(9, 2, 9, 0.96))" },
-            theme68: { name: "🌵 68. Desert Sand", primary: "#d7b99c", hover: "#bda082", box: "rgba(35, 30, 20, 0.92)", shadow: "rgba(215, 185, 156, 0.4)", bg: "linear-gradient(rgba(18, 15, 10, 0.92), rgba(9, 8, 5, 0.96))" },
-            theme69: { name: "🧨 69. Firecracker Pink", primary: "#ff2a85", hover: "#e6006e", box: "rgba(35, 10, 25, 0.92)", shadow: "rgba(255, 42, 133, 0.4)", bg: "linear-gradient(rgba(18, 5, 12, 0.92), rgba(9, 2, 6, 0.96))" },
-            theme70: { name: "🪐 70. Saturn Ring", primary: "#facc15", hover: "#eab308", box: "rgba(35, 30, 10, 0.92)", shadow: "rgba(250, 204, 21, 0.4)", bg: "linear-gradient(rgba(18, 15, 5, 0.92), rgba(9, 8, 2, 0.96))" },
-            theme71: { name: "⚓ 71. Deep Navy", primary: "#1e40af", hover: "#1e3a8a", box: "rgba(10, 15, 35, 0.92)", shadow: "rgba(30, 64, 175, 0.4)", bg: "linear-gradient(rgba(5, 8, 18, 0.92), rgba(2, 4, 9, 0.96))" },
-            theme72: { name: "🧯 72. Safety Orange", primary: "#f97316", hover: "#ea580c", box: "rgba(35, 20, 10, 0.92)", shadow: "rgba(249, 115, 22, 0.4)", bg: "linear-gradient(rgba(18, 10, 5, 0.92), rgba(9, 5, 2, 0.96))" },
-            theme73: { name: "🌿 73. Sage Green", primary: "#86efac", hover: "#4ade80", box: "rgba(15, 30, 20, 0.92)", shadow: "rgba(134, 239, 172, 0.4)", bg: "linear-gradient(rgba(8, 15, 10, 0.92), rgba(4, 8, 5, 0.96))" },
-            theme74: { name: "🍬 74. Bubblegum", primary: "#f472b6", hover: "#ec4899", box: "rgba(35, 15, 30, 0.92)", shadow: "rgba(244, 114, 182, 0.4)", bg: "linear-gradient(rgba(18, 8, 15, 0.92), rgba(9, 4, 8, 0.96))" },
-            theme75: { name: "🏆 75. Championship Gold", primary: "#eab308", hover: "#ca8a04", box: "rgba(35, 30, 10, 0.92)", shadow: "rgba(234, 179, 8, 0.4)", bg: "linear-gradient(rgba(18, 15, 5, 0.92), rgba(9, 8, 2, 0.96))" }
-        };
+        // Generating 5000 Themes dynamically for maximum performance
+        const themes = {};
+        const icons = ["✨", "🌟", "💫", "💎", "🔥", "⚡", "🌈", "🎇", "🌠", "🌀", "👑", "💎", "🚀", "💎", "🔮"];
+        
+        for (let i = 1; i <= 5000; i++) {
+            const hue = (i * 137.5) % 360;
+            themes[`theme${i}`] = {
+                name: `${icons[i % icons.length]} ${i}. Luxury Theme #${i}`,
+                primary: `hsl(${hue}, 85%, 60%)`,
+                hover: `hsl(${hue}, 85%, 50%)`,
+                box: `rgba(${i % 30 + 10}, ${i % 20 + 10}, ${i % 40 + 20}, 0.92)`,
+                shadow: `hsla(${hue}, 85%, 60%, 0.4)`,
+                bg: `linear-gradient(rgba(${i % 15}, ${i % 10}, ${i % 25 + 5}, 0.92), rgba(2, 2, 5, 0.96))`
+            };
+        }
 
         function initThemeModal() {
             const container = document.getElementById('themeListContainer');
@@ -211,7 +148,7 @@
         }
 
         function changeTheme(name) {
-            const t = themes[name] || themes.cyberpunkneon;
+            const t = themes[name] || themes.theme1;
             const r = document.documentElement;
             r.style.setProperty('--primary', t.primary);
             r.style.setProperty('--primary-hover', t.hover);
@@ -223,7 +160,7 @@
             localStorage.setItem('selectedTheme', name);
         }
 
-        const savedTheme = localStorage.getItem('selectedTheme') || 'cyberpunkneon';
+        const savedTheme = localStorage.getItem('selectedTheme') || 'theme1';
         initThemeModal();
         changeTheme(savedTheme);
 
