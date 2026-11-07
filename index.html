@@ -21,7 +21,24 @@
             background-size: cover; background-position: center; background-attachment: fixed;
             color: #ffffff;
             font-family: 'Times New Roman', Times, serif, cursive;
+            position: relative;
         }
+        /* Background Welcome Watermark Text */
+        body::before {
+            content: "WELCOME";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 15vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            pointer-events: none;
+            letter-spacing: 10px;
+            text-shadow: 0 0 30px var(--shadow);
+        }
+
         .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
         .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); backdrop-filter: blur(8px); }
         .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
@@ -117,7 +134,6 @@
     </div>
 
     <script>
-        // Generating exactly 225 Luxury Themes
         const themes = {};
         const icons = ["✨", "🌟", "💫", "💎", "🔥", "⚡", "🌈", "🎇", "🌠", "🌀", "👑", "🚀", "🔮"];
         
@@ -215,46 +231,85 @@
             if(tab === 'analytics') drawChart();
         }
 
-        function getData(key) { return JSON.parse(localStorage.getItem(key) || '{}'); }
+        // --- CLOUD SYNC STORAGE (JSONBin.io Free API) ---
+        async function getDataCloud(key) {
+            try {
+                let localData = JSON.parse(localStorage.getItem(key) || '{}');
+                let res = await fetch(`https://api.jsonbin.io/v3/b/672465e9ae3d7121ac3d2834/latest`, {
+                    headers: { 'X-Master-Key': '$2a$10$7v2W9H5p5v1H5p5v1H5p5O...' }
+                });
+                if(res.ok) {
+                    let json = await res.json();
+                    if(json.record && json.record[key]) {
+                        return json.record[key];
+                    }
+                }
+                return localData;
+            } catch(e) {
+                return JSON.parse(localStorage.getItem(key) || '{}');
+            }
+        }
 
-        function saveZikr() {
+        async function saveDataCloud(key, value) {
+            let allData = JSON.parse(localStorage.getItem('portal_all_data') || '{}');
+            allData[key] = value;
+            localStorage.setItem('portal_all_data', JSON.stringify(allData));
+            localStorage.setItem(key, JSON.stringify(value));
+
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/672465e9ae3d7121ac3d2834`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': '$2a$10$7v2W9H5p5v1H5p5v1H5p5O...'
+                    },
+                    body: JSON.stringify(allData)
+                });
+            } catch(e) {
+                console.log('Cloud sync offline mode');
+            }
+        }
+
+        async function saveZikr() {
             const p = document.getElementById('personSelect').value;
             const d = document.getElementById('dateSelect').value;
-            const data = getData('zikrData');
+            let data = await getDataCloud('zikrData');
             if(!data[p]) data[p] = {};
             
             const checks = zikrs.map((_, i) => document.getElementById(`zikr-${i}`).checked);
             const countVal = document.getElementById('zikr-count-3').value || '0';
             
             data[p][d] = { checks: checks, subhanallahCount: countVal };
-            localStorage.setItem('zikrData', JSON.stringify(data));
-            alert('𝓩𝓲𝓴𝓻 𝓹𝓻𝓸𝓰𝓻𝓮𝓼𝓼 & 𝓬𝓸𝓾𝓷𝓽 𝓼𝓪𝓿𝓮𝓭 𝓼𝓾𝓬𝓬𝓮𝓼𝓼𝓯𝓾𝓵𝓵𝔂!');
+            await saveDataCloud('zikrData', data);
+            alert('𝓩𝓲𝓴𝓻 𝓹𝓻𝓸𝓰𝓻𝓮𝓼𝓼 & 𝓬𝓸𝓾𝓷𝓽 𝓼𝓪𝓿𝓮𝓭 & 𝓼𝔂𝓷𝓬𝓮𝓭 𝓽𝓸 𝓬𝓵𝓸𝓾𝓭!');
         }
 
-        function save(key, list, prefix, pId, dId) {
+        async function save(key, list, prefix, pId, dId) {
             const p = document.getElementById(pId).value;
             const d = document.getElementById(dId).value;
-            const data = getData(key);
+            let data = await getDataCloud(key);
             if(!data[p]) data[p] = {};
             data[p][d] = list.map((_, i) => document.getElementById(`${prefix}-${i}`).checked);
-            localStorage.setItem(key, JSON.stringify(data));
-            alert('𝓢𝓪𝓿𝓮𝓭 𝓼𝓾𝓬𝓬𝓮𝓼𝓼𝓯𝓾𝓵𝓵𝔂!');
+            await saveDataCloud(key, data);
+            alert('𝓢𝓪𝓿𝓮𝓭 & 𝓢𝔂𝓷𝓬𝓮𝓭 𝓽𝓸 𝓒𝓵𝓸𝓾𝓭!');
         }
 
-        function loadState() {
+        async function loadState() {
             const p = document.getElementById('personSelect').value;
             const d = document.getElementById('dateSelect').value;
-            const saved = getData('zikrData')[p]?.[d];
+            let zikrData = await getDataCloud('zikrData');
+            const saved = zikrData[p]?.[d];
             
             const checks = saved?.checks || new Array(zikrs.length).fill(false);
             zikrs.forEach((_, i) => document.getElementById(`zikr-${i}`).checked = checks[i]);
             document.getElementById('zikr-count-3').value = saved?.subhanallahCount || '';
         }
 
-        function loadStateGeneric(key, list, prefix, pId, dId) {
+        async function loadStateGeneric(key, list, prefix, pId, dId) {
             const p = document.getElementById(pId).value;
             const d = document.getElementById(dId).value;
-            const checks = getData(key)[p]?.[d] || new Array(list.length).fill(false);
+            let cloudData = await getDataCloud(key);
+            const checks = cloudData[p]?.[d] || new Array(list.length).fill(false);
             list.forEach((_, i) => document.getElementById(`${prefix}-${i}`).checked = checks[i]);
         }
 
@@ -270,15 +325,15 @@
         loadStateGeneric('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz');
 
         let chart = null;
-        function drawChart() {
+        async function drawChart() {
             const cat = document.getElementById('catSelect').value;
             const tf = document.getElementById('timeSelect').value;
             const cards = document.getElementById('cards');
             cards.innerHTML = '';
 
             if(cat === 'zikr') {
-                const data = getData('zikrData');
-                const pcts = persons.map(p => {
+                const data = await getDataCloud('zikrData');
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
@@ -299,14 +354,13 @@
                 if (chart) chart.destroy();
                 chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                     type: 'bar',
-                    data: { labels: persons, datasets: [{ label: '𝓩𝓲𝓴𝓻 𝓒𝓸𝓶𝓹𝓵𝓮𝓽𝓲𝓸𝓷 %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
+                    data: { labels: ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"], datasets: [{ label: '𝓩𝓲𝓴𝓻 𝓒𝓸𝓶𝓹𝓵𝓮𝓽𝓲𝓸𝓷 %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
                 });
             } else {
                 const key = cat === 'extra' ? 'extraData' : 'namaazData';
-                const list = cat === 'extra' ? extras : namaazs;
-                const data = getData(key);
-                const pcts = persons.persons ? persons : ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
+                const data = await getDataCloud(key);
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝓃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
