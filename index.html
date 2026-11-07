@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.90), rgba(5, 2, 15, 0.94));
+            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.88), rgba(5, 2, 15, 0.92));
             --primary: #ff007f;
             --primary-hover: #e60073;
             --box-bg: rgba(18, 10, 35, 0.92);
@@ -21,22 +21,7 @@
             background-size: cover; background-position: center; background-attachment: fixed;
             color: #ffffff;
             font-family: 'Times New Roman', Times, serif, cursive;
-            position: relative;
-        }
-        /* Background Welcome Text - Clear & Visible */
-        body::before {
-            content: "WELCOME";
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 14vw;
-            font-weight: 900;
-            color: rgba(255, 255, 255, 0.15);
-            z-index: -1;
-            pointer-events: none;
-            letter-spacing: 12px;
-            text-shadow: 0 0 25px var(--primary), 0 0 50px rgba(0, 0, 0, 0.8);
+            overflow-x: hidden;
         }
 
         .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
@@ -51,6 +36,14 @@
 </head>
 <body class="min-h-screen font-sans p-4">
     <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- WELCOME BANNER ON TOP -->
+        <div class="text-center py-2">
+            <h1 class="text-3xl sm:text-5xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 drop-shadow-[0_0_20px_var(--primary)]">
+                WELCOME
+            </h1>
+        </div>
+
         <header class="theme-box p-4 rounded-xl flex justify-between items-center flex-wrap gap-4 relative">
             <h1 class="text-xl font-bold theme-title">𝓩𝓲𝓴𝓻 & 𝓝𝓪𝓶𝓪𝓪𝔃 𝓟𝓸𝓻𝓽𝓪𝓵</h1>
             <div class="flex items-center gap-2 flex-wrap">
@@ -333,7 +326,7 @@
 
             if(cat === 'zikr') {
                 const data = await getDataCloud('zikrData');
-                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝓃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
