@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.92), rgba(5, 2, 15, 0.96));
+            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.90), rgba(5, 2, 15, 0.94));
             --primary: #ff007f;
             --primary-hover: #e60073;
             --box-bg: rgba(18, 10, 35, 0.92);
@@ -23,20 +23,20 @@
             font-family: 'Times New Roman', Times, serif, cursive;
             position: relative;
         }
-        /* Background Welcome Watermark Text */
+        /* Background Welcome Text - Clear & Visible */
         body::before {
             content: "WELCOME";
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 15vw;
+            font-size: 14vw;
             font-weight: 900;
-            color: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.15);
             z-index: -1;
             pointer-events: none;
-            letter-spacing: 10px;
-            text-shadow: 0 0 30px var(--shadow);
+            letter-spacing: 12px;
+            text-shadow: 0 0 25px var(--primary), 0 0 50px rgba(0, 0, 0, 0.8);
         }
 
         .theme-title { color: var(--primary); text-shadow: 0 0 15px var(--shadow); }
@@ -360,7 +360,7 @@
             } else {
                 const key = cat === 'extra' ? 'extraData' : 'namaazData';
                 const data = await getDataCloud(key);
-                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝓃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
