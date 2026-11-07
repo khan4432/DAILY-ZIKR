@@ -39,7 +39,7 @@
             <div class="flex items-center gap-2 flex-wrap">
                 <!-- Theme Picker Button -->
                 <button onclick="toggleThemeModal()" id="themeBtn" class="bg-slate-900 border text-xs rounded px-3 py-2 text-white outline-none flex items-center gap-2 border-[var(--primary)] shadow font-semibold">
-                    🎨 <span id="currentThemeName">𝓢𝓮𝓵𝓮𝓬𝓽 𝓣𝓱𝓮𝓶𝓮 (5000)</span> ▼
+                    🎨 <span id="currentThemeName">𝓢𝓮𝓵𝓮𝓬𝓽 𝓣𝓱𝓮𝓶𝓮 (225)</span> ▼
                 </button>
 
                 <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn text-xs">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</button>
@@ -49,11 +49,11 @@
             </div>
         </header>
 
-        <!-- THEME SELECTION MODAL POPUP (5000 Themes) -->
+        <!-- THEME SELECTION MODAL POPUP (225 Themes) -->
         <div id="themeModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="theme-box p-6 rounded-2xl max-w-lg w-full max-h-[85vh] flex flex-col space-y-4 shadow-2xl">
                 <div class="flex justify-between items-center border-b border-slate-700 pb-3">
-                    <h2 class="text-lg font-bold theme-title">𝓢𝓮𝓵𝓮𝓬𝓽 𝓯𝓻𝓸𝓶 5000 𝓛𝓾𝔁𝓾𝓻𝔂 𝓣𝓱𝓮𝓶𝓮𝓼</h2>
+                    <h2 class="text-lg font-bold theme-title">𝓢𝓮𝓵𝓮𝓬𝓽 𝓯𝓻𝓸𝓶 225 𝓛𝓾𝔁𝓾𝓻𝔂 𝓣𝓱𝓮𝓶𝓮𝓼</h2>
                     <button onclick="toggleThemeModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
                 </div>
                 <div id="themeListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 overflow-y-auto pr-2 max-h-[60vh]"></div>
@@ -101,7 +101,7 @@
                     <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
                         <option value="zikr">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</option>
                         <option value="extra">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</option>
-                        <option value="namaaz">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔫</option>
+                        <option value="namaaz">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</option>
                     </select>
                     <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
                         <option value="daily">𝓓𝓪𝓲𝓵𝔂</option>
@@ -117,11 +117,11 @@
     </div>
 
     <script>
-        // Generating 5000 Themes dynamically for maximum performance
+        // Generating exactly 225 Luxury Themes
         const themes = {};
-        const icons = ["✨", "🌟", "💫", "💎", "🔥", "⚡", "🌈", "🎇", "🌠", "🌀", "👑", "💎", "🚀", "💎", "🔮"];
+        const icons = ["✨", "🌟", "💫", "💎", "🔥", "⚡", "🌈", "🎇", "🌠", "🌀", "👑", "🚀", "🔮"];
         
-        for (let i = 1; i <= 5000; i++) {
+        for (let i = 1; i <= 225; i++) {
             const hue = (i * 137.5) % 360;
             themes[`theme${i}`] = {
                 name: `${icons[i % icons.length]} ${i}. Luxury Theme #${i}`,
@@ -306,7 +306,7 @@
                 const key = cat === 'extra' ? 'extraData' : 'namaazData';
                 const list = cat === 'extra' ? extras : namaazs;
                 const data = getData(key);
-                const pcts = persons.map(p => {
+                const pcts = persons.persons ? persons : ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
@@ -327,7 +327,7 @@
                 if (chart) chart.destroy();
                 chart = new Chart(document.getElementById('myChart').getContext('2d'), {
                     type: 'bar',
-                    data: { labels: persons, datasets: [{ label: '𝓒𝓸𝓶𝓹𝓵𝓮𝓽𝓲𝓸𝓷 %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
+                    data: { labels: ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"], datasets: [{ label: '𝓒𝓸𝓶𝓹𝓵𝓮𝓽𝓲𝓸𝓷 %', data: pcts, backgroundColor: ['#ff007f', '#00c8ff', '#b400ff', '#ff8000'], borderRadius: 6 }] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100 } } }
                 });
             }
