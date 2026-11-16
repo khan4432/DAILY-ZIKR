@@ -8,17 +8,26 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-grad: linear-gradient(rgba(10, 5, 25, 0.88), rgba(5, 2, 15, 0.92));
             --primary: #ff007f;
             --primary-hover: #e60073;
             --box-bg: rgba(18, 10, 35, 0.92);
             --shadow: rgba(255, 0, 127, 0.45);
         }
+        
+        /* Moving Rainbow Live Wallpaper Background Animation */
+        @keyframes rainbowAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
-            background: var(--bg-grad), 
-                        linear-gradient(90deg, rgba(0, 200, 255, 0.15) 0%, rgba(255, 0, 0, 0.15) 100%),
+            background: linear-gradient(120deg, rgba(255, 0, 127, 0.3), rgba(0, 200, 255, 0.3), rgba(138, 43, 226, 0.3), rgba(255, 215, 0, 0.3), rgba(0, 255, 127, 0.3)),
                         url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover; background-position: center; background-attachment: fixed;
+            background-size: 400% 400%, cover;
+            background-position: center;
+            background-attachment: fixed;
+            animation: rainbowAnimation 15s ease infinite;
             color: #ffffff;
             font-family: 'Times New Roman', Times, serif, cursive;
             overflow-x: hidden;
@@ -34,12 +43,12 @@
         }
     </style>
 </head>
-<body class="min-h-screen font-sans p-4">
+<body class="min-h-screen font-sans p-4 pt-8">
     <div class="max-w-4xl mx-auto space-y-6">
         
-        <!-- WELCOME BANNER ON TOP -->
-        <div class="text-center py-2">
-            <h1 class="text-3xl sm:text-5xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 drop-shadow-[0_0_20px_var(--primary)]">
+        <!-- WELCOME BANNER PROPERLY SPACED -->
+        <div class="text-center pb-2">
+            <h1 class="text-4xl sm:text-6xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 drop-shadow-[0_0_25px_var(--primary)]">
                 WELCOME
             </h1>
         </div>
@@ -137,8 +146,7 @@
                 primary: `hsl(${hue}, 85%, 60%)`,
                 hover: `hsl(${hue}, 85%, 50%)`,
                 box: `rgba(${i % 30 + 10}, ${i % 20 + 10}, ${i % 40 + 20}, 0.92)`,
-                shadow: `hsla(${hue}, 85%, 60%, 0.4)`,
-                bg: `linear-gradient(rgba(${i % 15}, ${i % 10}, ${i % 25 + 5}, 0.92), rgba(2, 2, 5, 0.96))`
+                shadow: `hsla(${hue}, 85%, 60%, 0.4)`
             };
         }
 
@@ -163,7 +171,6 @@
             r.style.setProperty('--primary-hover', t.hover);
             r.style.setProperty('--box-bg', t.box);
             r.style.setProperty('--shadow', t.shadow);
-            r.style.setProperty('--bg-grad', t.bg);
             document.getElementById('currentThemeName').innerText = t.name;
             document.getElementById('themeModal').classList.add('hidden');
             localStorage.setItem('selectedTheme', name);
@@ -326,7 +333,7 @@
 
             if(cat === 'zikr') {
                 const data = await getDataCloud('zikrData');
-                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝓃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
