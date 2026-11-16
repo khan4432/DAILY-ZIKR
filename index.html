@@ -10,7 +10,8 @@
         :root {
             --primary: #ff007f;
             --primary-hover: #e60073;
-            --box-bg: rgba(18, 10, 35, 0.92);
+            /* Box background ko translucent kar diya hai taaki piche ka wallpaper pura dikhe */
+            --box-bg: rgba(15, 10, 30, 0.65);
             --shadow: rgba(255, 0, 127, 0.45);
         }
         
@@ -27,7 +28,7 @@
                 text-shadow: 0 0 15px #ff007f, 0 0 30px #ff007f;
             }
             25% {
-                transform: translateY(-12px) scale(1.05);
+                transform: translateY(-10px) scale(1.05);
                 color: #00d2ff;
                 text-shadow: 0 0 20px #00d2ff, 0 0 40px #00d2ff;
             }
@@ -37,7 +38,7 @@
                 text-shadow: 0 0 15px #ccff00, 0 0 30px #ccff00;
             }
             75% {
-                transform: translateY(12px) scale(1.05);
+                transform: translateY(10px) scale(1.05);
                 color: #a855f7;
                 text-shadow: 0 0 20px #a855f7, 0 0 40px #a855f7;
             }
@@ -55,23 +56,28 @@
         }
 
         body {
-            background: linear-gradient(120deg, rgba(255, 0, 127, 0.3), rgba(0, 200, 255, 0.3), rgba(138, 43, 226, 0.3), rgba(255, 215, 0, 0.3), rgba(0, 255, 127, 0.3)),
+            /* Wallpaper aur gradient ko balance kiya hai taaki wallpaper saaf dikhe */
+            background: linear-gradient(120deg, rgba(10, 5, 20, 0.4), rgba(20, 5, 30, 0.4)),
                         url('https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?q=80&w=1920&auto=format&fit=crop');
-            background-size: 400% 400%, cover;
+            background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            animation: rainbowAnimation 15s ease infinite;
             color: #ffffff;
             font-family: 'Times New Roman', Times, serif, cursive;
             overflow-x: hidden;
         }
 
-        /* Text ke piche ka shadow/blur puri tarah hata diya hai */
         .theme-title { 
             color: var(--primary); 
         }
 
-        .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); backdrop-filter: blur(8px); }
+        .theme-box { 
+            background: var(--box-bg); 
+            border: 1.5px solid var(--primary); 
+            box-shadow: 0 0 25px var(--shadow); 
+            backdrop-filter: blur(12px); /* Glassmorphism blur taaki wallpaper piche se jhalakta rahe */
+        }
+        
         .theme-btn { background: var(--primary); color: #fff; font-weight: bold; box-shadow: 0 0 20px var(--shadow); transition: 0.3s; }
         .theme-btn:hover { background: var(--primary-hover); box-shadow: 0 0 30px var(--shadow); }
         
@@ -84,7 +90,7 @@
     <div class="max-w-4xl mx-auto space-y-6">
         
         <!-- CUTE LIVE ANIMATED WELCOME BANNER -->
-        <div class="text-center py-2">
+        <div class="text-center py-1">
             <h1 class="text-4xl sm:text-7xl font-black tracking-widest animated-welcome">
                 𝒲ℰL𝒞𝒪ℳℰ
             </h1>
@@ -94,21 +100,21 @@
             <h1 class="text-xl font-bold theme-title">𝓩𝓲𝓴𝓻 & 𝓝𝓪𝓶𝓪𝓪𝔃 𝓟𝓸𝓻𝓽𝓪𝓵</h1>
             <div class="flex items-center gap-2 flex-wrap">
                 <!-- Theme Picker Button -->
-                <button onclick="toggleThemeModal()" id="themeBtn" class="bg-slate-900 border text-xs rounded px-3 py-2 text-white outline-none flex items-center gap-2 border-[var(--primary)] shadow font-semibold">
+                <button onclick="toggleThemeModal()" id="themeBtn" class="bg-slate-900/80 border text-xs rounded px-3 py-2 text-white outline-none flex items-center gap-2 border-[var(--primary)] shadow font-semibold">
                     🎨 <span id="currentThemeName">𝓢𝓮𝓵𝓮𝓬𝓽 𝓣𝓱𝓮𝓶𝓮 (225)</span> ▼
                 </button>
 
                 <button onclick="switchTab('tracker')" id="btn-tracker" class="px-3 py-2 rounded font-medium theme-btn text-xs">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</button>
-                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</button>
-                <button onclick="switchTab('namaaz')" id="btn-namaaz" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</button>
-                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800 text-slate-300 text-xs">𝓐𝓷𝓪𝓵𝔂𝓽𝓲𝓬𝓼</button>
+                <button onclick="switchTab('extrasawaab')" id="btn-extrasawaab" class="px-3 py-2 rounded font-medium bg-slate-800/80 text-slate-300 text-xs">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</button>
+                <button onclick="switchTab('namaaz')" id="btn-namaaz" class="px-3 py-2 rounded font-medium bg-slate-800/80 text-slate-300 text-xs">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</button>
+                <button onclick="switchTab('analytics')" id="btn-analytics" class="px-3 py-2 rounded font-medium bg-slate-800/80 text-slate-300 text-xs">𝓐𝓷𝓪𝓵𝔂𝓽𝓲𝓬𝓼</button>
             </div>
         </header>
 
         <!-- THEME SELECTION MODAL POPUP (225 Themes) -->
-        <div id="themeModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div id="themeModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <div class="theme-box p-6 rounded-2xl max-w-lg w-full max-h-[85vh] flex flex-col space-y-4 shadow-2xl">
-                <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <div class="flex justify-between items-center border-b border-slate-700/60 pb-3">
                     <h2 class="text-lg font-bold theme-title">𝓢𝓮𝓵𝓮𝓬𝓽 𝓯𝓻𝓸𝓶 225 𝓛𝓾𝔁𝓾𝓻𝔂 𝓣𝓱𝓮𝓶𝓮𝓼</h2>
                     <button onclick="toggleThemeModal()" class="text-slate-400 hover:text-white font-bold text-lg">✕</button>
                 </div>
@@ -120,8 +126,8 @@
         <section id="tab-tracker" class="theme-box p-6 rounded-xl space-y-4">
             <h2 class="text-lg font-semibold theme-title">𝓜𝓪𝓻𝓴 𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝓃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
-                <input type="date" id="dateSelect" class="bg-slate-900 border rounded p-2 text-white text-sm">
+                <select id="personSelect" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
+                <input type="date" id="dateSelect" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700">
             </div>
             <div id="zikrList" class="space-y-3"></div>
             <button onclick="saveZikr()" class="w-full theme-btn py-2.5 rounded text-sm">𝓢𝓪𝓿𝓮 𝓩𝓲𝓴𝓻 𝓟𝓻𝓸𝓰𝓻𝓮𝓼𝓼</button>
@@ -131,8 +137,8 @@
         <section id="tab-extrasawaab" class="theme-box p-6 rounded-xl space-y-4 hidden">
             <h2 class="text-lg font-semibold theme-title">𝓜𝓪𝓻𝓴 𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
-                <input type="date" id="dateSelectExtra" class="bg-slate-900 border rounded p-2 text-white text-sm">
+                <select id="personSelectExtra" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
+                <input type="date" id="dateSelectExtra" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700">
             </div>
             <div id="extraList" class="space-y-2"></div>
             <button onclick="save('extraData', extras, 'extra', 'personSelectExtra', 'dateSelectExtra')" class="w-full theme-btn py-2.5 rounded text-sm">𝓢𝓪𝓿𝓮 𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</button>
@@ -142,8 +148,8 @@
         <section id="tab-namaaz" class="theme-box p-6 rounded-xl space-y-4 hidden">
             <h2 class="text-lg font-semibold theme-title">𝓜𝓪𝓻𝓴 𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelectNamaaz" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
-                <input type="date" id="dateSelectNamaaz" class="bg-slate-900 border rounded p-2 text-white text-sm">
+                <select id="personSelectNamaaz" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
+                <input type="date" id="dateSelectNamaaz" class="bg-slate-900/80 border rounded p-2 text-white text-sm border-slate-700">
             </div>
             <div id="namaazList" class="space-y-2"></div>
             <button onclick="save('namaazData', namaazs, 'namaaz', 'personSelectNamaaz', 'dateSelectNamaaz')" class="w-full theme-btn py-2.5 rounded text-sm">𝓢𝓪𝓿𝓮 𝓝𝓪𝓶𝓪𝓪𝔃 𝓟𝓻𝓸𝓰𝓻𝓮𝓼𝓼</button>
@@ -154,12 +160,12 @@
             <div class="flex justify-between items-center flex-wrap gap-2">
                 <h2 class="text-lg font-semibold theme-title">𝓐𝓷𝓪𝓵𝔂𝓽𝓲𝓬𝓼 & 𝓡𝓮𝓹𝓸𝓻𝓽𝓼</h2>
                 <div class="flex gap-2">
-                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
+                    <select id="catSelect" onchange="drawChart()" class="bg-slate-900/80 border rounded p-1.5 text-white text-xs border-slate-700">
                         <option value="zikr">𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</option>
                         <option value="extra">𝓔𝔁𝓽𝓻𝓪 𝓢𝓪𝔀𝓪𝓪𝓫</option>
                         <option value="namaaz">𝓓𝓪𝓲𝓵𝔂 𝓝𝓪𝓶𝓪𝓪𝔃</option>
                     </select>
-                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900 border rounded p-1.5 text-white text-xs">
+                    <select id="timeSelect" onchange="drawChart()" class="bg-slate-900/80 border rounded p-1.5 text-white text-xs border-slate-700">
                         <option value="daily">𝓓𝓪𝓲𝓵𝔂</option>
                         <option value="weekly">𝓦𝓮𝓮𝓴𝓵𝔂</option>
                         <option value="monthly">𝓜𝓸𝓷𝓽𝓱𝓵𝔂</option>
@@ -182,7 +188,7 @@
                 name: `${icons[i % icons.length]} ${i}. Luxury Theme #${i}`,
                 primary: `hsl(${hue}, 85%, 60%)`,
                 hover: `hsl(${hue}, 85%, 50%)`,
-                box: `rgba(${i % 30 + 10}, ${i % 20 + 10}, ${i % 40 + 20}, 0.92)`
+                box: `hsla(${hue}, 80%, 15%, 0.65)` // Translucent dynamic color boxes
             };
         }
 
@@ -231,18 +237,18 @@
             zikrs.forEach((item, i) => {
                 if(i === 3) {
                     el.innerHTML += `
-                        <div class="p-2.5 bg-slate-900/80 border border-slate-700 rounded space-y-2">
+                        <div class="p-2.5 bg-slate-950/60 border border-slate-700/80 rounded space-y-2">
                             <label class="flex items-center gap-3 cursor-pointer">
                                 <input type="checkbox" id="zikr-${i}" class="w-4 h-4 accent-[var(--primary)]">
                                 <span class="text-sm font-medium">${item}</span>
                             </label>
                             <div class="flex items-center justify-between pl-7">
-                                <span class="text-xs text-slate-400">𝓚𝓲𝓽𝓷𝓲 𝓫𝓪𝓪𝓻 𝓹𝓪𝓭𝓱𝓪 (𝓒𝓸𝓾𝓷𝓽):</span>
-                                <input type="number" id="zikr-count-${i}" min="0" placeholder="𝓣𝔂𝓹𝓮 𝓼𝓸𝓶𝓮𝓽𝓱𝓲𝓷𝓰 𝓽𝓸 𝓼𝓽𝓪𝓻𝓽" class="bg-slate-800 border border-slate-600 rounded px-2 py-1 text-xs text-white w-44 text-center outline-none focus:border-[var(--primary)]">
+                                <span class="text-xs text-slate-300">𝓚𝓲𝓽𝓷𝓲 𝓫𝓪𝓪𝓻 𝓹𝓪𝓭𝓱𝓪 (𝓒𝓸𝓾𝓷𝓽):</span>
+                                <input type="number" id="zikr-count-${i}" min="0" placeholder="𝓣𝔂𝓹𝓮 𝓼𝓸𝓶𝓮𝓽𝓱𝓲𝓷𝓰 𝓽𝓸 𝓼𝓽𝓪𝓻𝓽" class="bg-slate-900/80 border border-slate-600 rounded px-2 py-1 text-xs text-white w-44 text-center outline-none focus:border-[var(--primary)]">
                             </div>
                         </div>`;
                 } else {
-                    el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="zikr-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm font-medium">${item}</span></label>`;
+                    el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-950/60 border border-slate-700/80 rounded cursor-pointer"><input type="checkbox" id="zikr-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm font-medium">${item}</span></label>`;
                 }
             });
         }
@@ -251,7 +257,7 @@
             const el = document.getElementById(id);
             el.innerHTML = '';
             list.forEach((item, i) => {
-                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-900/80 border border-slate-700 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm font-medium">${item}</span></label>`;
+                el.innerHTML += `<label class="flex items-center gap-3 p-2.5 bg-slate-950/60 border border-slate-700/80 rounded cursor-pointer"><input type="checkbox" id="${prefix}-${i}" class="w-4 h-4 accent-[var(--primary)]"><span class="text-sm font-medium">${item}</span></label>`;
             });
         }
         renderZikr();
@@ -261,7 +267,7 @@
         function switchTab(tab) {
             ['tracker', 'extrasawaab', 'namaaz', 'analytics'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
-                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium text-xs ${t === tab ? 'theme-btn' : 'bg-slate-800 text-slate-300'}`;
+                document.getElementById(`btn-${t}`).className = `px-3 py-2 rounded font-medium text-xs ${t === tab ? 'theme-btn' : 'bg-slate-800/80 text-slate-300'}`;
             });
             if(tab === 'analytics') drawChart();
         }
@@ -395,7 +401,7 @@
             } else {
                 const key = cat === 'extra' ? 'extraData' : 'namaazData';
                 const data = await getDataCloud(key);
-                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝔃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
+                const pcts = ["𝓘𝓶𝓻𝓪𝓷", "𝓢𝓪𝓲𝓶𝓪", "𝓗𝓾𝓃𝓪𝓲𝓯𝓪", "𝓐𝓵𝓲"].map(p => {
                     const pData = data[p] || {};
                     let comp = 0, poss = 0, now = new Date();
                     Object.keys(pData).forEach(dStr => {
