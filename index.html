@@ -20,7 +20,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Cute Floating & Color Changing Live Animation for WELCOME */
         @keyframes welcomeBounceAndColor {
             0% {
                 transform: translateY(0px) scale(1);
@@ -67,9 +66,9 @@
             overflow-x: hidden;
         }
 
+        /* Text ke piche ka shadow/blur puri tarah hata diya hai */
         .theme-title { 
             color: var(--primary); 
-            text-shadow: 0 0 10px #00d2ff, 0 0 20px var(--shadow); 
         }
 
         .theme-box { background: var(--box-bg); border: 1.5px solid var(--primary); box-shadow: 0 0 25px var(--shadow); backdrop-filter: blur(8px); }
@@ -78,7 +77,6 @@
         
         h1, h2, h3, label, span, button, input, select {
             letter-spacing: 0.5px;
-            text-shadow: 0 0 8px rgba(0, 210, 255, 0.4);
         }
     </style>
 </head>
@@ -88,7 +86,7 @@
         <!-- CUTE LIVE ANIMATED WELCOME BANNER -->
         <div class="text-center py-2">
             <h1 class="text-4xl sm:text-7xl font-black tracking-widest animated-welcome">
-                𝒲ℰ𝓛𝒞𝒪ℳℰ
+                𝒲ℰL𝒞𝒪ℳℰ
             </h1>
         </div>
 
@@ -122,7 +120,7 @@
         <section id="tab-tracker" class="theme-box p-6 rounded-xl space-y-4">
             <h2 class="text-lg font-semibold theme-title">𝓜𝓪𝓻𝓴 𝓓𝓪𝓲𝓵𝔂 𝓩𝓲𝓴𝓻</h2>
             <div class="grid grid-cols-2 gap-4">
-                <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝔃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
+                <select id="personSelect" class="bg-slate-900 border rounded p-2 text-white text-sm"><option>𝓘𝓶𝓻𝓪𝓷</option><option>𝓢𝓪𝓲𝓶𝓪</option><option>𝓗𝓾𝓃𝓪𝓲𝓯𝓪</option><option>𝓐𝓵𝓲</option></select>
                 <input type="date" id="dateSelect" class="bg-slate-900 border rounded p-2 text-white text-sm">
             </div>
             <div id="zikrList" class="space-y-3"></div>
@@ -184,8 +182,7 @@
                 name: `${icons[i % icons.length]} ${i}. Luxury Theme #${i}`,
                 primary: `hsl(${hue}, 85%, 60%)`,
                 hover: `hsl(${hue}, 85%, 50%)`,
-                box: `rgba(${i % 30 + 10}, ${i % 20 + 10}, ${i % 40 + 20}, 0.92)`,
-                shadow: `hsla(${hue}, 85%, 60%, 0.4)`
+                box: `rgba(${i % 30 + 10}, ${i % 20 + 10}, ${i % 40 + 20}, 0.92)`
             };
         }
 
@@ -209,7 +206,6 @@
             r.style.setProperty('--primary', t.primary);
             r.style.setProperty('--primary-hover', t.hover);
             r.style.setProperty('--box-bg', t.box);
-            r.style.setProperty('--shadow', t.shadow);
             document.getElementById('currentThemeName').innerText = t.name;
             document.getElementById('themeModal').classList.add('hidden');
             localStorage.setItem('selectedTheme', name);
